@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Candidate">
+    <Position X="4" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAAAAAAABBEAAAAAAAAAAAAABBEAAAABAAAAgAAI=</HashCode>
+      <FileName>Candidate.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Person">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoQAAAQAAAABAAAAAACAAAgAAAgAAAAAIAAgAAAAAgA=</HashCode>
+      <FileName>Person.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Employee">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEBAAEAQAgAAAAAAAKAACCBACBEAEAgAAQIAAAAA=</HashCode>
+      <FileName>Emploee.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Developer">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAABAAAEACAAAAAAAJACAQAAAQAAAAAAAAA=</HashCode>
+      <FileName>Developer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAEAABAAAAAAAKgACAABACBAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Manager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HRSpecialist">
+    <Position X="12" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAABAAAAAAAAAAAAADACAACAAACAAACAAAA=</HashCode>
+      <FileName>HRSpecialist.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
