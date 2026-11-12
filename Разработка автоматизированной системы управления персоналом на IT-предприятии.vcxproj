@@ -144,6 +144,7 @@
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Menus.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="ReportsMenu.h" />
     <ClInclude Include="Repository.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>

@@ -28,6 +28,7 @@ void printMainMenu() {
         << "  1. Сотрудники\n"
         << "  2. Кандидаты\n"
         << "  3. Должности\n"
+        << "  4. Отчёты\n"
         << "  0. Выход\n"
         << "====================================================\n";
 }
@@ -47,12 +48,13 @@ int main() {
     bool running = true;
     while (running) {
         printMainMenu();
-        int choice = readInt("Выбор: ", 0, 3);
+        int choice = readInt("Выбор: ", 0, 4);
 
         switch (choice) {
         case 1: employeesMenu(employees, positions); break;
         case 2: candidatesMenu(candidates, positions); break;
         case 3: positionsMenu(positions); break;
+        case 4: reportsMenu(employees, candidates); break;
         case 0:
             running = false;
             std::cout << "Выход. До свидания.\n";
