@@ -43,7 +43,11 @@ namespace kyrsach {
 
         void print(std::ostream& os) const override {
             os << "[ андидат] " << getFullName()
-                << " | статус: " << status << "\n";
+                << " | статус: " << status;
+            if (desiredPosition != nullptr) {
+                os << " | желаема€ должность: " << desiredPosition->getTitle();
+            }
+            os << "\n";
         }
 
         const std::string& getResume() const {
