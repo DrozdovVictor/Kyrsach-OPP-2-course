@@ -134,10 +134,13 @@
     <ClInclude Include="Classes.h" />
     <ClInclude Include="Developer.h" />
     <ClInclude Include="Emploee.h" />
+    <ClInclude Include="EmployeeFactory.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="HRSpecialist.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="Repository.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

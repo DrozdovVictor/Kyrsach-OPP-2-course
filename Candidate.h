@@ -5,7 +5,7 @@
 #include"Person.h"
 #include"Emploee.h"
 
-namespace system {
+namespace kyrsach {
 
     const int CAND_NEW = 0; // новый
     const int CAND_INTERVIEW = 1; // на собеседовании

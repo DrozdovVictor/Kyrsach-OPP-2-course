@@ -5,7 +5,7 @@
 #include"Person.h"
 #include "Exceptions.h"
 
-namespace system {
+namespace kyrsach {
 
     // grades
     const int GRADE_JUNIOR = 0;

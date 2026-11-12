@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace system {
+namespace kyrsach {
 
     class HrException : public std::runtime_error {
     public:

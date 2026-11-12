@@ -1,4 +1,6 @@
 #pragma once
+#include"Exceptions.h"
+
 #include"Person.h"
 #include"Emploee.h"
 #include"Developer.h"

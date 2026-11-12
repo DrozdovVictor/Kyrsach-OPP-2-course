@@ -5,7 +5,7 @@
 
 #include"Emploee.h"
 
-namespace system {
+namespace kyrsach {
 
     class Developer : public Employee {
         int grade = GRADE_JUNIOR;

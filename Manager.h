@@ -5,7 +5,7 @@
 
 #include"Emploee.h"
 
-namespace system {
+namespace kyrsach {
 
     class Manager : public Employee {
         std::vector<Employee*> subordinates; // агрегация, не владеет (подчинённые)

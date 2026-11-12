@@ -4,7 +4,7 @@
 
 #include"Emploee.h"
 
-namespace system {
+namespace kyrsach {
 
     class HRSpecialist : public Employee {
         int hiredThisYear = 0;

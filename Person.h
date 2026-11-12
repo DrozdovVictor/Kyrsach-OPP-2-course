@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace system {
+namespace kyrsach {
 
 	struct Date {
 		int day = 1;
