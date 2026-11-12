@@ -9,6 +9,13 @@ namespace kyrsach {
 		int year = 2000;
 	};
 
+	// Перегрузка оператора ВВОДА для Date.
+    // Не friend: поля Date публичные (struct).
+	inline std::istream& operator>>(std::istream& is, Date& d) {
+		is >> d.day >> d.month >> d.year;
+		return is;
+	}
+
 	struct ContactInfo {
 		std::string phone;
 		std::string email;

@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include<vector>
+#include <memory>      // дл€ std::unique_ptr
+#include <utility>     // дл€ std::move
 
 #include"Person.h"
 #include "Exceptions.h"
@@ -81,7 +83,7 @@ namespace kyrsach {
         int status = 0;
 
         Position* position = nullptr;   // ассоциаци€, не владеет
-        UserAccount* account = nullptr; // композици€, владеет
+        std::unique_ptr<UserAccount> account;  // композици€ (умный указатель)
         std::vector<Skill> skills;      // композици€, по значению
 
     public:
@@ -96,9 +98,7 @@ namespace kyrsach {
             position(nullptr),
             account(nullptr) {}
 
-        ~Employee() override {
-            delete account;   // владеем Ч об€заны удалить
-        }
+        ~Employee() override = default;
 
         virtual double calculateSalary() const = 0;
         virtual std::string getDuties() const = 0;
@@ -109,11 +109,8 @@ namespace kyrsach {
         void setPosition(Position* p) {
             position = p;
         }
-        void setAccount(UserAccount* a) {
-            if (account != a) {
-                delete account;
-                account = a;
-            }
+        void setAccount(std::unique_ptr<UserAccount> a) {
+            account = std::move(a);   // старое автоматически удалитс€
         }
 
         void setStatus(int s) {

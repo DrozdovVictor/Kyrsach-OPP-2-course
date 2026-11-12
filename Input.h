@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include <string>
 
@@ -6,8 +6,8 @@
 
 namespace kyrsach {
 
-    const int INT_MIN = 0;
-    const int INT_MAX = 100;
+    const int DEFAULT_INT_MIN = 0;
+    const int DEFAULT_INT_MAX = 100;
 
     inline void clearInput() {
         std::cin.clear();
@@ -15,19 +15,19 @@ namespace kyrsach {
     }
 
     inline int readInt(const std::string& prompt,
-        int min = INT_MIN, int max = INT_MAX) {
+        int min = DEFAULT_INT_MIN, int max = DEFAULT_INT_MAX) {
         while (true) {
             std::cout << prompt;
             int x;
             std::cin >> x;
             if (std::cin.fail()) {
                 clearInput();
-                std::cout << "Îøèáêà: ââåäèòå öåëîå ÷èñëî.\n";
+                std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ†ÐµÐ»Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾.\n";
                 continue;
             }
             clearInput();
             if (x < min || x > max) {
-                std::cout << "Îøèáêà: ÷èñëî äîëæíî áûòü â [" << min << ", " << max << "].\n";
+                std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ñ‡Ð¸ÑÐ»Ð¾ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ Ð² [" << min << ", " << max << "].\n";
                 continue;
             }
             return x;
@@ -41,12 +41,12 @@ namespace kyrsach {
             std::cin >> x;
             if (std::cin.fail()) {
                 clearInput();
-                std::cout << "Îøèáêà: ââåäèòå ÷èñëî.\n";
+                std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾.\n";
                 continue;
             }
             clearInput();
             if (x < min) {
-                std::cout << "Îøèáêà: ÷èñëî äîëæíî áûòü >= " << min << ".\n";
+                std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ñ‡Ð¸ÑÐ»Ð¾ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ >= " << min << ".\n";
                 continue;
             }
             return x;
@@ -62,17 +62,19 @@ namespace kyrsach {
 
     inline Date readDate(const std::string& prompt) {
         while (true) {
-            std::cout << prompt << " (ää ìì ãããã): ";
+            std::cout << prompt << " (Ð´Ð´ Ð¼Ð¼ Ð³Ð³Ð³Ð³): ";
             Date d;
-            std::cin >> d.day >> d.month >> d.year;
+            std::cin >> d;                 // â† Ð·Ð´ÐµÑÑŒ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ operator>>
             if (std::cin.fail()) {
                 clearInput();
-                std::cout << "Îøèáêà: ââåäèòå òðè öåëûõ ÷èñëà.\n";
+                std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‚Ñ€Ð¸ Ñ†ÐµÐ»Ñ‹Ñ… Ñ‡Ð¸ÑÐ»Ð°.\n";
                 continue;
             }
             clearInput();
-            if (d.day < 1 || d.day > 31 || d.month < 1 || d.month > 12 || d.year < 1900) {
-                std::cout << "Îøèáêà: íåêîððåêòíàÿ äàòà.\n";
+            if (d.day < 1 || d.day > 31 ||
+                d.month < 1 || d.month > 12 ||
+                d.year < 1900) {
+                std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: Ð½ÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð°Ñ Ð´Ð°Ñ‚Ð°.\n";
                 continue;
             }
             return d;
@@ -82,9 +84,9 @@ namespace kyrsach {
     inline ContactInfo readContactInfo(const std::string& prompt) {
         std::cout << "--- " << prompt << " ---\n";
         ContactInfo c;
-        c.phone = readLine("Òåëåôîí: ");
+        c.phone = readLine("Ð¢ÐµÐ»ÐµÑ„Ð¾Ð½: ");
         c.email = readLine("Email:   ");
-        c.address = readLine("Àäðåñ:   ");
+        c.address = readLine("ÐÐ´Ñ€ÐµÑ:   ");
         return c;
     }
 
