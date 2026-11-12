@@ -16,19 +16,28 @@
     <Filter Include="Файлы заголовков\Classes">
       <UniqueIdentifier>{205d5357-b9b0-47d4-8d51-7405e529be3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Utilities">
+      <UniqueIdentifier>{7d0403fb-bbe6-4914-833d-99086bf3c70d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Menus">
+      <UniqueIdentifier>{ada27926-f553-4a74-b366-7a7de8ffe6cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="CandidatesMenu.h">
+      <Filter>Файлы заголовков\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="EmployeesMenu.h">
+      <Filter>Файлы заголовков\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionsMenu.h">
+      <Filter>Файлы заголовков\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Exceptions.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Person.h">
       <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
@@ -47,13 +56,25 @@
     <ClInclude Include="Candidate.h">
       <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="EmployeeFactory.h">
+      <Filter>Файлы заголовков\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions.h">
+      <Filter>Файлы заголовков\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Repository.h">
+      <Filter>Файлы заголовков\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Файлы заголовков\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="EmployeeFactory.h">
+    <ClInclude Include="Classes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

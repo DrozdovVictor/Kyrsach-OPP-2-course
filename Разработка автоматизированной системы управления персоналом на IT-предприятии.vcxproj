@@ -127,7 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CandidatesMenu.h" />
+    <ClCompile Include="EmployeesMenu.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PositionsMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Candidate.h" />
@@ -139,8 +142,10 @@
     <ClInclude Include="HRSpecialist.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="Menus.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Repository.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

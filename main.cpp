@@ -1,9 +1,8 @@
 ﻿#include <iostream>
 
 #include"Classes.h"
-#include "Repository.h"
-#include "EmployeeFactory.h"
-#include "Input.h"
+#include"Utilities.h"
+#include"Menus.h"
 
 using namespace kyrsach;
 
@@ -54,24 +53,4 @@ int main() {
         }
     }
     return 0;
-}
-
-// Заглушки подменю (M1)
-void menuEmployees(Repository<Employee>& employees,
-    Repository<Position>& positions) {
-    (void)employees;
-    (void)positions;
-    std::cout << "\n[Раздел «Сотрудники» — в разработке]\n";
-}
-
-void menuCandidates(Repository<Candidate>& candidates,
-    Repository<Position>& positions) {
-    (void)candidates;
-    (void)positions;
-    std::cout << "\n[Раздел «Кандидаты» — в разработке]\n";
-}
-
-void menuPositions(Repository<Position>& positions) {
-    (void)positions;
-    std::cout << "\n[Раздел «Должности» — в разработке]\n";
 }
