@@ -1,42 +1,58 @@
 #pragma once
 #include <string>
 
-struct Date {
-	int day = 1; 
-	int month = 1; 
-	int year = 2000;
-};
+namespace system {
 
-struct ContactInfo {
-	std::string phone;
-	std::string email;
-	std::string address;
-};
+	struct Date {
+		int day = 1;
+		int month = 1;
+		int year = 2000;
+	};
 
-class Person {
-protected:
-	int id = 0;
-	std::string fullName;
-	Date birthDay;
-	ContactInfo contacts;
+	struct ContactInfo {
+		std::string phone;
+		std::string email;
+		std::string address;
+	};
 
-public:
-	Person() = default;
-	Person(int id, const std::string& fullName, const Date& birthDay, const ContactInfo& contacts)
-		  : id(id), fullName(fullName), birthDay(birthDay), contacts(contacts) {}
+	class Person {
+	protected:
+		int id = 0;
+		std::string fullName;
+		Date birthDay;
+		ContactInfo contacts;
 
-	int getId() const {
-		return id;
-	}
-	const std::string& getFullName() const {
-		return fullName;
-	}
+		static inline int nextId = 1;
 
-	virtual std::string getRole() const = 0;
-	virtual void print(std::ostream& os) const = 0;
+	public:
+		Person() = default;
+		Person(int id, const std::string& fullName, const Date& birthDay, const ContactInfo& contacts)
+			: id(id), fullName(fullName), birthDay(birthDay), contacts(contacts) {
+		}
 
-	Person(const Person&) = delete; // запрет копирования
-	Person& operator=(const Person&) = delete; // запрет присваивания
+		int getId() const {
+			return id;
+		}
+		const std::string& getFullName() const {
+			return fullName;
+		}
 
-	virtual ~Person() = default;
-};
+		virtual std::string getRole() const = 0;
+		virtual void print(std::ostream& os) const = 0;
+
+		static int generateId() {
+			return nextId++;
+		}
+
+		Person(const Person&) = delete; // запрет копирования
+		Person& operator=(const Person&) = delete; // запрет присваивания
+
+		friend std::ostream& operator<<(std::ostream& os, const Person& p) {
+			os << "#" << p.id << " ";
+			p.print(os);
+			return os;
+		}
+
+		virtual ~Person() = default;
+	};
+}

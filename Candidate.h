@@ -5,49 +5,55 @@
 #include"Person.h"
 #include"Emploee.h"
 
-const int CAND_NEW = 0; // новый
-const int CAND_INTERVIEW = 1; // на собеседовании
-const int CAND_OFFERED = 2; // получил оффер
-const int CAND_REJECTED = 3; // отказ
+namespace system {
 
-class Candidate : public Person {
-    std::string resume;
-    Position* desiredPosition = nullptr;   // ассоциация, не владеет
-    int status = 0;                        // CAND_NEW = 0
+    const int CAND_NEW = 0; // новый
+    const int CAND_INTERVIEW = 1; // на собеседовании
+    const int CAND_OFFERED = 2; // получил оффер
+    const int CAND_REJECTED = 3; // отказ
 
-public:
-    Candidate(int id, const std::string& fullName,
-        const Date& birthDay, const ContactInfo& contacts)
-        : Person(id, fullName, birthDay, contacts),
-        desiredPosition(nullptr),
-        status(0) {}
+    class Candidate : public Person {
+        std::string resume;
+        Position* desiredPosition = nullptr;   // ассоциация, не владеет
+        int status = 0;                        // CAND_NEW = 0
 
-    void setResume(const std::string& r) { 
-        resume = r;
-    }
-    void setDesiredPosition(Position* p) { 
-        desiredPosition = p; 
-    }
-    void setStatus(int s) { 
-        status = s;
-    }
+    public:
+        Candidate(int id, const std::string& fullName,
+            const Date& birthDay, const ContactInfo& contacts)
+            : Person(id, fullName, birthDay, contacts),
+            desiredPosition(nullptr),
+            status(0) {
+        }
 
-    std::string getRole() const override { 
-        return "Candidate";
-    }
+        void setResume(const std::string& r) {
+            resume = r;
+        }
+        void setDesiredPosition(Position* p) {
+            desiredPosition = p;
+        }
+        void setStatus(int s) {
+            if (s < CAND_NEW || s > CAND_REJECTED)
+                throw ValidationException("Неверный статус кандидата: " + std::to_string(s));
+            status = s;
+        }
 
-    void print(std::ostream& os) const override {
-        os << "[Candidate] " << getFullName()
-            << " | status: " << status << "\n";
-    }
+        std::string getRole() const override {
+            return "Кандидат";
+        }
 
-    const std::string& getResume() const { 
-        return resume; 
-    }
-    Position* getDesiredPosition() const { 
-        return desiredPosition; 
-    }
-    int getStatus() const { 
-        return status; 
-    }
-};
+        void print(std::ostream& os) const override {
+            os << "[Кандидат] " << getFullName()
+                << " | статус: " << status << "\n";
+        }
+
+        const std::string& getResume() const {
+            return resume;
+        }
+        Position* getDesiredPosition() const {
+            return desiredPosition;
+        }
+        int getStatus() const {
+            return status;
+        }
+    };
+}

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы заголовков\Classes">
+      <UniqueIdentifier>{205d5357-b9b0-47d4-8d51-7405e529be3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -23,23 +26,26 @@
     <ClInclude Include="Classes.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Exceptions.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
     <ClInclude Include="Person.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Emploee.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Developer.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Manager.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
     <ClInclude Include="HRSpecialist.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Emploee.h">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Developer.h">
+      <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Candidate.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
