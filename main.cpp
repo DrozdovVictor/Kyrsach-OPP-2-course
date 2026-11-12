@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <windows.h>
 
 #include"Classes.h"
 #include"Utilities.h"
@@ -7,14 +8,15 @@
 using namespace kyrsach;
 
 // Прямые объявления подменю.
-// Реализации — ниже, пока заглушки.
-void menuEmployees(Repository<Employee>& employees,
+void employeesMenu(Repository<Employee>& employees,
     Repository<Position>& positions);
 
-void menuCandidates(Repository<Candidate>& candidates,
+void candidatesMenu(Repository<Candidate>& candidates,
     Repository<Position>& positions);
 
-void menuPositions(Repository<Position>& positions);
+void positionsMenu(Repository<Position>& positions);
+
+void createEmployeeMenu(Repository<Employee>& employees);
 
 // Главное меню
 void printMainMenu();
@@ -29,6 +31,8 @@ void printMainMenu() {
 
 int main() {
     setlocale(LC_ALL, "rus");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     // Порядок объявления важен:
     // positions — первым → удалится последним.
     // employees/candidates — позже → удалятся раньше.
@@ -43,9 +47,9 @@ int main() {
         int choice = readInt("Выбор: ", 0, 3);
 
         switch (choice) {
-        case 1: menuEmployees(employees, positions); break;
-        case 2: menuCandidates(candidates, positions); break;
-        case 3: menuPositions(positions); break;
+        case 1: employeesMenu(employees, positions); break;
+        case 2: candidatesMenu(candidates, positions); break;
+        case 3: positionsMenu(positions); break;
         case 0:
             running = false;
             std::cout << "Выход. До свидания.\n";

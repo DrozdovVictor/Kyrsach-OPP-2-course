@@ -13,8 +13,7 @@ inline void printPositionsMenu() {
         << "  0. Назад\n"
         << "-----------------\n";
 }
-
-inline void menuPositions(Repository<Position>& positions) {
+inline void positionsMenu(Repository<Position>& positions) {
     bool running = true;
     while (running) {
         printPositionsMenu();

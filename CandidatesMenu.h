@@ -14,8 +14,7 @@ inline void printCandidatesMenu() {
         << "  0. Назад\n"
         << "-----------------\n";
 }
-
-inline void menuCandidates(Repository<Candidate>& candidates,
+inline void candidatesMenu(Repository<Candidate>& candidates,
     Repository<Position>& positions) {
     (void)positions;
 
