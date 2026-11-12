@@ -18,6 +18,9 @@ void positionsMenu(Repository<Position>& positions);
 
 void createEmployeeMenu(Repository<Employee>& employees);
 
+void menuEmployeeOperations(Repository<Employee>& employees,
+    Repository<Position>& positions);
+
 // Главное меню
 void printMainMenu();
 void printMainMenu() {
