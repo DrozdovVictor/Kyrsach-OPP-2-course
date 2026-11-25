@@ -45,6 +45,8 @@ int main() {
     Repository<Employee> employees;
     Repository<Candidate> candidates;
 
+    if (!login()) return 0;
+
     bool running = true;
     while (running) {
         printMainMenu();

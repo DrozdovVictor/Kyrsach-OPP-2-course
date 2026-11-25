@@ -80,6 +80,9 @@
     <ClInclude Include="ReportsMenu.h">
       <Filter>Файлы заголовков\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="Login.h">
+      <Filter>Файлы заголовков\Menus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -141,6 +141,7 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="HRSpecialist.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Login.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Menus.h" />
     <ClInclude Include="Person.h" />
