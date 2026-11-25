@@ -1,0 +1,1 @@
+# id|fullName|bd_day|bd_mon|bd_year|phone|email|resume|status|desired_pos_idx

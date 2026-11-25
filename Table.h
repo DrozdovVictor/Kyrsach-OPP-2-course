@@ -76,7 +76,7 @@ namespace kyrsach {
         }
         Table t({ "ID", "ФИО", "Роль", "Статус" });
         for (Employee* e : employees.getAll()) {
-            std::string statusStr = (e->getStatus() == STATUS_ACTIVE) ? "Активен" :
+            std::string statusStr = (e->getStatus() == STATUS_ACTIVE) ? "Работает" :
                 (e->getStatus() == STATUS_VACATION) ? "Отпуск" : "Уволен";
             t.addRow({
                 std::to_string(e->getId()),

@@ -28,6 +28,7 @@ namespace kyrsach {
         static void savePositions(const std::string& filename, const Repository<Position>& positions) {
             std::ofstream out(filename);
             if (!out) throw std::runtime_error("Не удалось открыть файл на запись: " + filename);
+            out << "# title|grade\n";
             for (Position* p : positions.getAll()) {
                 out << p->getTitle() << "|" << p->getGrade() << "\n";
             }
@@ -39,6 +40,7 @@ namespace kyrsach {
             std::ofstream out(filename);
             if (!out) throw std::runtime_error("Не удалось открыть файл на запись: " + filename);
 
+            out << "# type|id|fullName|bd_day|bd_mon|bd_year|phone|email|personnel_num|hire_day|hire_mon|hire_year|status|pos_idx|extra\n";
             for (Employee* e : employees.getAll()) {
                 std::string type, extra;
 
@@ -89,6 +91,7 @@ namespace kyrsach {
             std::ofstream out(filename);
             if (!out) throw std::runtime_error("Не удалось открыть файл на запись: " + filename);
 
+            out << "# id|fullName|bd_day|bd_mon|bd_year|phone|email|resume|status|desired_pos_idx\n";
             for (Candidate* c : candidates.getAll()) {
                 int posIdx = -1;
                 if (c->getDesiredPosition()) {
@@ -115,7 +118,7 @@ namespace kyrsach {
 
             std::string line;
             while (std::getline(in, line)) {
-                if (line.empty()) continue;
+                if (line.empty() || line[0] == '#') continue;
                 auto parts = split(line, '|');
                 if (parts.size() < 2) continue;
                 positions.add(new Position(parts[0], std::stoi(parts[1])));
@@ -134,7 +137,7 @@ namespace kyrsach {
 
             // ПЕРВЫЙ ПРОХОД: создаем всех сотрудников
             while (std::getline(in, line)) {
-                if (line.empty()) continue;
+                if (line.empty() || line[0] == '#') continue;
                 auto parts = split(line, '|');
                 if (parts.size() < 14) continue;
 
@@ -221,7 +224,7 @@ namespace kyrsach {
             int maxId = Person::nextId - 1; // Учитываем тех, кто уже загрузился (сотрудники)
 
             while (std::getline(in, line)) {
-                if (line.empty()) continue;
+                if (line.empty() || line[0] == '#') continue;
                 auto parts = split(line, '|');
                 if (parts.size() < 10) continue;
 

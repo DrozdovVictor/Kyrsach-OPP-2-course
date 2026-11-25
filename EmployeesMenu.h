@@ -5,6 +5,14 @@
 
 using namespace kyrsach;
 
+inline std::string gradeToStr(int g) {
+    if (g == GRADE_JUNIOR) return "Junior";
+    if (g == GRADE_MIDDLE) return "Middle";
+    if (g == GRADE_SENIOR) return "Senior";
+    if (g == GRADE_LEAD)   return "Lead";
+    return "Неизвестно";
+}
+
 inline void printCreateEmployeeMenu() {
     std::cout << "\n--- СОЗДАТЬ СОТРУДНИКА ---\n"
         << "  1. Разработчик\n"
@@ -127,9 +135,13 @@ inline void printEmployeeDetails(Employee* e) {
     t.addRow({ "ФИО", e->getFullName() });
     t.addRow({ "Роль", e->getRole() });
 
-    std::string statusStr = (e->getStatus() == STATUS_ACTIVE) ? "Активен" :
+    std::string statusStr = (e->getStatus() == STATUS_ACTIVE) ? "Работает" :
         (e->getStatus() == STATUS_VACATION) ? "Отпуск" : "Уволен";
     t.addRow({ "Статус", statusStr });
+
+    Position* p = e->getPosition();
+    t.addRow({ "Должность", p ? p->getTitle() : "пусто" });
+
     t.addRow({ "Навыков", std::to_string(e->getSkillsCount()) });
     t.addRow({ "Обязанности", e->getDuties() });
 
@@ -160,27 +172,20 @@ inline void printOperationsMenu() {
         << "  1. Сменить статус\n"
         << "  2. Назначить должность\n"
         << "  3. Добавить навык\n"
-        << "  4. Показать подробную информацию\n"
-        << "  5. Добавить технологию [Developer]\n"
-        << "  6. Добавить подчинённого [Manager]\n"
-        << "  7. Отметить найм [HRSpecialist]\n"
+        << "  4. Показать навыки\n"
+        << "  5. Показать подробную информацию\n"
+        << "  6. Добавить технологию (только для разработчика)\n"
+        << "  7. Добавить подчинённого (только для менеджера)\n"
+        << "  8. Отметить найм (только для HR)\n"
         << "  0. Назад\n"
         << "------------------------------\n";
 }
 inline void changeStatus(Employee* e) {
-    int how = readInt("Ввод: 1-числом (0-2), 2-словом, 0-отмена: ", 0, 2);
-    if (how == 0) return;
+    int s = readInt("Ввод: 0-работает, 1-отпуск, 2-уволен, -1-отмена: ", -1, 2);
+    if (s == -1) return;
 
     try {
-        if (how == 1) {
-            int s = readInt("Статус (0-активный, 1-отпуск, 2-уволен): ",
-                STATUS_ACTIVE, STATUS_FIRED);
-            e->setStatus(s);                         // перегрузка int
-        }
-        else {
-            std::string s = readLine("Статус (активный/отпуск/уволен): ");
-            e->setStatus(s);                         // перегрузка string
-        }
+        e->setStatus(s); // Вызывается перегрузка int
         std::cout << "Статус изменён.\n";
     }
     catch (const ValidationException& ex) {
@@ -192,13 +197,14 @@ inline void assignPosition(Employee* e, Repository<Position>& positions) {
         std::cout << "Нет должностей. Сначала создайте их в разделе «Должности».\n";
         return;
     }
-
     std::vector<Position*> list = positions.getAll();
-    std::cout << "\nДоступные должности:\n";
+
+    Table t({ "№", "Название", "Грейд" });
     for (int i = 0; i < static_cast<int>(list.size()); ++i) {
-        std::cout << "  " << (i + 1) << ". " << list[i]->getTitle()
-            << " | грейд: " << list[i]->getGrade();
+        t.addRow({ std::to_string(i + 1), list[i]->getTitle(), gradeToStr(list[i]->getGrade()) });
     }
+    t.print();
+
     int idx = readInt("Выберите номер (0-отмена): ", 0, static_cast<int>(list.size()));
     if (idx == 0) return;
 
@@ -220,6 +226,18 @@ inline void addSkill(Employee* e) {
     catch (const ValidationException& ex) {
         std::cout << "Ошибка: " << ex.what() << "\n";
     }
+}
+inline void showSkills(Employee* e) {
+    const auto& skills = e->getSkills();
+    if (skills.empty()) {
+        std::cout << "  У сотрудника пока нет навыков.\n";
+        return;
+    }
+    Table t({ "Навык", "Уровень" });
+    for (const auto& s : skills) {
+        t.addRow({ s.name, std::to_string(s.level) });
+    }
+    t.print();
 }
 
 // Developer: добавить технологию
@@ -309,16 +327,17 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printOperationsMenu();
-        int choice = readInt("Выбор: ", 0, 7);
+        int choice = readInt("Выбор: ", 0, 8);
 
         switch (choice) {
         case 1: changeStatus(e); break;
         case 2: assignPosition(e, positions); break;
         case 3: addSkill(e); break;
-        case 4: printEmployeeDetails(e); break;
-        case 5: addTechnology(e); break;
-        case 6: addSubordinate(e, employees); break;
-        case 7: incrementHired(e); break;
+        case 4: showSkills(e); break;
+        case 5: printEmployeeDetails(e); break;
+        case 6: addTechnology(e); break;
+        case 7: addSubordinate(e, employees); break;
+        case 8: incrementHired(e); break;
         case 0: running = false; break;
         }
     }

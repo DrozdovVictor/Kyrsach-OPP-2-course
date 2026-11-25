@@ -1,0 +1,5 @@
+# title|grade
+Web разработчик|1
+Security Engineer|2
+Дизайнер|1
+Backend разработчик|1
