@@ -86,6 +86,9 @@
     <ClInclude Include="Table.h">
       <Filter>Файлы заголовков\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Storage.h">
+      <Filter>Файлы заголовков\Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -45,6 +45,12 @@ namespace kyrsach {
 
 		virtual std::string getRole() const = 0;
 		virtual void print(std::ostream& os) const = 0;
+		const Date& getBirthDay() const { 
+			return birthDay;
+		}
+		const ContactInfo& getContacts() const { 
+			return contacts; 
+		}
 
 		static int generateId() {
 			return nextId++;

@@ -38,6 +38,9 @@ namespace kyrsach {
         int getTechCount() const {
             return static_cast<int>(techStack.size());
         }
+        const std::vector<std::string>& getTechStack() const { 
+            return techStack; 
+        }
 
         void print(std::ostream& os) const override {
             os << "[Разработчик] " << getFullName()

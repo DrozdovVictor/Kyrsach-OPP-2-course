@@ -7,4 +7,5 @@
 #include"Manager.h"
 #include"HRSpecialist.h"
 #include"Candidate.h"
+#include"Storage.h"
 

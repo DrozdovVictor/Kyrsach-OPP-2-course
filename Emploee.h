@@ -105,5 +105,17 @@ namespace kyrsach {
         int getSkillsCount() const {
             return static_cast<int>(skills.size());
         }
+        int getPersonnelNumber() const { 
+            return personnelNumber;
+        }
+        const Date& getHireDate() const { 
+            return hireDate; 
+        }
+        Position* getPosition() const { 
+            return position; 
+        }
+        const std::vector<Skill>& getSkills() const { 
+            return skills; 
+        }
     };
 }

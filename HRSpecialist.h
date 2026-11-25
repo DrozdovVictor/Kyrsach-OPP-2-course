@@ -25,16 +25,16 @@ namespace kyrsach {
         std::string getDuties() const override {
             return "Найм, адаптация и учёт персонала";
         }
-
         std::string getRole() const override {
             return "HR-специалист";
+        }
+        int getHiredThisYear() const { 
+            return hiredThisYear; 
         }
 
         void print(std::ostream& os) const override {
             os << "[HR-специалист] " << getFullName()
                 << " | нанято: " << hiredThisYear << "\n";
         }
-
-        int getHiredThisYear() const { return hiredThisYear; }
     };
 }

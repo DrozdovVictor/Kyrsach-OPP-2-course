@@ -21,16 +21,18 @@ namespace kyrsach {
             subordinates.push_back(e);
         }
 
-        std::string getDuties() const override {
-            return "Управление командой и планирование";
-        }
-
         bool canManage() const override {
             return true;
         }
 
+        std::string getDuties() const override {
+            return "Управление командой и планирование";
+        }
         std::string getRole() const override {
             return "Менеджер";
+        }
+        const std::vector<Employee*>& getSubordinates() const { 
+            return subordinates; 
         }
 
         void print(std::ostream& os) const override {

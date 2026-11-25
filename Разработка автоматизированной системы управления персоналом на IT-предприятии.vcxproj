@@ -147,6 +147,7 @@
     <ClInclude Include="Person.h" />
     <ClInclude Include="ReportsMenu.h" />
     <ClInclude Include="Repository.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Table.h" />
   </ItemGroup>
