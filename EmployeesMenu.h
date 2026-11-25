@@ -142,27 +142,18 @@ inline void printEmployeeDetails(Employee* e) {
     Position* p = e->getPosition();
     t.addRow({ "Должность", p ? p->getTitle() : "пусто" });
 
-    t.addRow({ "Навыков", std::to_string(e->getSkillsCount()) });
     t.addRow({ "Обязанности", e->getDuties() });
 
-    if (e->canManage()) {
-        t.addRow({ "Управляет", "Да" });
-    }
-
-    // Добавляем специфичные поля через dynamic_cast
+    // Специфичные поля через dynamic_cast
     if (auto dev = dynamic_cast<Developer*>(e)) {
-        std::string gradeStr = (dev->getGrade() == GRADE_JUNIOR) ? "Junior" :
-            (dev->getGrade() == GRADE_MIDDLE) ? "Middle" :
-            (dev->getGrade() == GRADE_SENIOR) ? "Senior" : "Lead";
-        t.addRow({ "Грейд", gradeStr });
-        t.addRow({ "Технологий", std::to_string(dev->getTechCount()) });
+        t.addRow({ "Грейд", gradeToStr(dev->getGrade()) });
+        t.addRow({ "Навыков", std::to_string(dev->getSkillsCount()) }); // <--- Перенесли сюда
     }
     else if (auto mgr = dynamic_cast<Manager*>(e)) {
         t.addRow({ "Подчинённых", std::to_string(mgr->getSubordinatesCount()) });
     }
-    else if (auto hr = dynamic_cast<HRSpecialist*>(e)) {
-        t.addRow({ "Нанято за год", std::to_string(hr->getHiredThisYear()) });
-    }
+    // Блок else if (auto hr = dynamic_cast<HRSpecialist*>(e)) удалён, 
+    // так как у HR больше нет специфичных полей для вывода
 
     std::cout << "\n--- Карточка сотрудника ---\n";
     t.print();
@@ -171,12 +162,11 @@ inline void printOperationsMenu() {
     std::cout << "\n--- ОПЕРАЦИИ С СОТРУДНИКОМ ---\n"
         << "  1. Сменить статус\n"
         << "  2. Назначить должность\n"
-        << "  3. Добавить навык\n"
-        << "  4. Показать навыки\n"
+        << "  3. Добавить навык (только для разработчика)\n"
+        << "  4. Показать навыки (только для разработчика)\n"
         << "  5. Показать подробную информацию\n"
-        << "  6. Добавить технологию (только для разработчика)\n"
-        << "  7. Добавить подчинённого (только для менеджера)\n"
-        << "  8. Отметить найм (только для HR)\n"
+        << "  6. Добавить подчинённого (только для менеджера)\n"
+        << "  7. Отметить найм (только для HR)\n"
         << "  0. Назад\n"
         << "------------------------------\n";
 }
@@ -199,7 +189,7 @@ inline void assignPosition(Employee* e, Repository<Position>& positions) {
     }
     std::vector<Position*> list = positions.getAll();
 
-    Table t({ "№", "Название", "Грейд" });
+    Table t({ "#", "Название", "Грейд" });
     for (int i = 0; i < static_cast<int>(list.size()); ++i) {
         t.addRow({ std::to_string(i + 1), list[i]->getTitle(), gradeToStr(list[i]->getGrade()) });
     }
@@ -212,6 +202,12 @@ inline void assignPosition(Employee* e, Repository<Position>& positions) {
     std::cout << "Должность назначена.\n";
 }
 inline void addSkill(Employee* e) {
+    Developer* d = dynamic_cast<Developer*>(e);
+    if (d == nullptr) {
+        std::cout << "Навыки могут быть только у разработчика.\n";
+        return;
+    }
+
     std::string name = readLine("Название навыка: ");
     if (name.empty()) {
         std::cout << "Название не может быть пустым.\n";
@@ -219,16 +215,22 @@ inline void addSkill(Employee* e) {
     }
     int level = readInt("Уровень (1-5): ", 1, 5);
     try {
-        e->addSkill(Skill{ name, level });
+        d->addSkill(Skill{ name, level });
         std::cout << "Навык добавлен (всего навыков: "
-            << e->getSkillsCount() << ").\n";
+            << d->getSkillsCount() << ").\n";
     }
     catch (const ValidationException& ex) {
         std::cout << "Ошибка: " << ex.what() << "\n";
     }
 }
 inline void showSkills(Employee* e) {
-    const auto& skills = e->getSkills();
+    Developer* d = dynamic_cast<Developer*>(e);
+    if (d == nullptr) {
+        std::cout << "Навыки могут быть только у разработчика.\n";
+        return;
+    }
+
+    const auto& skills = d->getSkills();
     if (skills.empty()) {
         std::cout << "  У сотрудника пока нет навыков.\n";
         return;
@@ -240,22 +242,6 @@ inline void showSkills(Employee* e) {
     t.print();
 }
 
-// Developer: добавить технологию
-inline void addTechnology(Employee* e) {
-    Developer* dev = dynamic_cast<Developer*>(e);
-    if (dev == nullptr) {
-        std::cout << "Операция только для разработчика.\n";
-        return;
-    }
-    std::string tech = readLine("Название технологии: ");
-    if (tech.empty()) {
-        std::cout << "Название не может быть пустым.\n";
-        return;
-    }
-    dev->addTechnology(tech);
-    std::cout << "Технология добавлена (всего: "
-        << dev->getTechCount() << ").\n";
-}
 // Manager: добавить подчинённого
 // Здесь ДВЕ проверки:
 //   1) canManage() — полиморфный запрос «умеет ли управлять»
@@ -296,17 +282,6 @@ inline void addSubordinate(Employee* e, Repository<Employee>& employees) {
     std::cout << "Подчинённый добавлен (всего: "
         << mgr->getSubordinatesCount() << ").\n";
 }
-// HRSpecialist: отметить найм
-inline void incrementHired(Employee* e) {
-    HRSpecialist* hr = dynamic_cast<HRSpecialist*>(e);
-    if (hr == nullptr) {
-        std::cout << "Операция только для HR-специалиста.\n";
-        return;
-    }
-    hr->incrementHired();
-    std::cout << "Найм отмечен (всего за год: "
-        << hr->getHiredThisYear() << ").\n";
-}
 
 inline void employeeOperationsMenu(Repository<Employee>& employees,
     Repository<Position>& positions) {
@@ -327,7 +302,7 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printOperationsMenu();
-        int choice = readInt("Выбор: ", 0, 8);
+        int choice = readInt("Выбор: ", 0, 6);
 
         switch (choice) {
         case 1: changeStatus(e); break;
@@ -335,9 +310,7 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
         case 3: addSkill(e); break;
         case 4: showSkills(e); break;
         case 5: printEmployeeDetails(e); break;
-        case 6: addTechnology(e); break;
-        case 7: addSubordinate(e, employees); break;
-        case 8: incrementHired(e); break;
+        case 6: addSubordinate(e, employees); break;
         case 0: running = false; break;
         }
     }

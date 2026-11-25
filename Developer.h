@@ -7,9 +7,14 @@
 
 namespace kyrsach {
 
+    struct Skill {
+        std::string name;
+        int level = 1;  // 1..5
+    };
+
     class Developer : public Employee {
         int grade = GRADE_JUNIOR;
-        std::vector<std::string> techStack;   // композиция
+        std::vector<Skill> skills;
 
     public:
         Developer(int id, const std::string& fullName,
@@ -22,10 +27,6 @@ namespace kyrsach {
                 throw ValidationException("Неверный грейд: " + std::to_string(grade));
         }
 
-        void addTechnology(const std::string& t) {
-            techStack.push_back(t);
-        }
-
         std::string getDuties() const override {
             return "Разработка и поддержка ПО";
         }
@@ -35,16 +36,21 @@ namespace kyrsach {
         int getGrade() const {
             return grade;
         }
-        int getTechCount() const {
-            return static_cast<int>(techStack.size());
+
+        void addSkill(const Skill& s) {
+            if (s.level < 1 || s.level > 5)
+                throw ValidationException("Уровень навыка должен быть 1..5");
+            skills.push_back(s);
         }
-        const std::vector<std::string>& getTechStack() const { 
-            return techStack; 
+        const std::vector<Skill>& getSkills() const { 
+            return skills;
+        }
+        int getSkillsCount() const { 
+            return static_cast<int>(skills.size()); 
         }
 
         void print(std::ostream& os) const override {
-            os << "[Разработчик] " << getFullName()
-                << " | технологий: " << techStack.size() << "\n";
+            os << "[Разработчик] " << getFullName();
         }
     };
 }

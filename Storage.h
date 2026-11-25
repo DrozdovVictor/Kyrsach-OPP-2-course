@@ -47,9 +47,10 @@ namespace kyrsach {
                 if (auto d = dynamic_cast<Developer*>(e)) {
                     type = "D";
                     extra = std::to_string(d->getGrade()) + "|";
-                    const auto& techs = d->getTechStack();
-                    for (size_t i = 0; i < techs.size(); ++i) {
-                        extra += techs[i] + (i + 1 < techs.size() ? ";" : "");
+                    const auto& skills = d->getSkills();
+                    for (size_t i = 0; i < skills.size(); ++i) {
+                        extra += skills[i].name + ":" + std::to_string(skills[i].level);
+                        if (i + 1 < skills.size()) extra += ";";
                     }
                 }
                 else if (auto m = dynamic_cast<Manager*>(e)) {
@@ -61,7 +62,7 @@ namespace kyrsach {
                 }
                 else if (auto h = dynamic_cast<HRSpecialist*>(e)) {
                     type = "H";
-                    extra = std::to_string(h->getHiredThisYear());
+                    extra = "";
                 }
 
                 int posIdx = -1;
@@ -163,9 +164,12 @@ namespace kyrsach {
                     auto dev = new Developer(id, name, bd, ci, pn, hd, grade);
 
                     if (ext.size() > 1 && !ext[1].empty()) {
-                        auto techs = split(ext[1], ';');
-                        for (const auto& t : techs) {
-                            if (!t.empty()) dev->addTechnology(t);
+                        auto skillsStr = split(ext[1], ';');
+                        for (const auto& sStr : skillsStr) {
+                            auto sParts = split(sStr, ':');
+                            if (sParts.size() == 2) {
+                                dev->addSkill(Skill{ sParts[0], std::stoi(sParts[1]) });
+                            }
                         }
                     }
                     emp = dev;
@@ -176,10 +180,7 @@ namespace kyrsach {
                     emp = mgr;
                 }
                 else if (type == "H") {
-                    int hired = !extra.empty() ? std::stoi(extra) : 0;
-                    auto hr = new HRSpecialist(id, name, bd, ci, pn, hd);
-                    for (int i = 0; i < hired; ++i) hr->incrementHired();
-                    emp = hr;
+                    emp = new HRSpecialist(id, name, bd, ci, pn, hd);
                 }
 
                 if (emp) {

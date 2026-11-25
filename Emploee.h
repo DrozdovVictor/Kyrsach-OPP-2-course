@@ -24,11 +24,6 @@ namespace kyrsach {
     const int STATUS_VACATION = 1;   // в отпуске
     const int STATUS_FIRED = 2;   // уволен
 
-    struct Skill {
-        std::string name;
-        int level = 1;  // 1..5
-    };
-
     class Position {
         std::string title;
         int grade = GRADE_JUNIOR;
@@ -58,7 +53,6 @@ namespace kyrsach {
         int status = 0;
 
         Position* position = nullptr;   // ассоциация, не владеет
-        std::vector<Skill> skills;      // композиция, по значению
 
     public:
         Employee(int id, const std::string& fullName,
@@ -93,17 +87,9 @@ namespace kyrsach {
             else if (name == "уволен" || name == "fired") setStatus(STATUS_FIRED);
             else throw ValidationException("Неизвестный статус: " + name);
         }
-        void addSkill(const Skill& s) {
-            if (s.level < 1 || s.level > 5)
-                throw ValidationException("Уровень навыка должен быть 1..5");
-            skills.push_back(s);
-        }
 
         int getStatus() const {
             return status;
-        }
-        int getSkillsCount() const {
-            return static_cast<int>(skills.size());
         }
         int getPersonnelNumber() const { 
             return personnelNumber;
@@ -113,9 +99,6 @@ namespace kyrsach {
         }
         Position* getPosition() const { 
             return position; 
-        }
-        const std::vector<Skill>& getSkills() const { 
-            return skills; 
         }
     };
 }
