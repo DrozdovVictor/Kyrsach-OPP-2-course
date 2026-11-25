@@ -1,18 +1,18 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 
 #include"Classes.h"
 
 namespace kyrsach {
 
-    // Паттерн «Фабричный метод» (Factory Method).
-    // Только статические методы — экземпляр создать нельзя.
+    // РџР°С‚С‚РµСЂРЅ В«Р¤Р°Р±СЂРёС‡РЅС‹Р№ РјРµС‚РѕРґВ» (Factory Method).
+    // РўРѕР»СЊРєРѕ СЃС‚Р°С‚РёС‡РµСЃРєРёРµ РјРµС‚РѕРґС‹ вЂ” СЌРєР·РµРјРїР»СЏСЂ СЃРѕР·РґР°С‚СЊ РЅРµР»СЊР·СЏ.
     class EmployeeFactory {
         inline static int nextPersonnelNumber = 101;
 
     public:
         EmployeeFactory() = delete;
-        friend class Storage;
+        friend class Storage; // в†ђ РґРѕСЃС‚СѓРї Рє nextPersonnelNumber
 
         static Developer* createDeveloper(
             const std::string& fullName,

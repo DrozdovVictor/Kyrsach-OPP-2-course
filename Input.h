@@ -54,10 +54,16 @@ namespace kyrsach {
     }
 
     inline std::string readLine(const std::string& prompt) {
-        std::cout << prompt;
-        std::string s;
-        std::getline(std::cin, s);
-        return s;
+        while (true) {
+            std::cout << prompt;
+            std::string s;
+            std::getline(std::cin, s);
+            if (s.find('|') != std::string::npos) {
+                std::cout << "Ошибка: символ '|' запрещён (используется как разделитель файла).\n";
+                continue;
+            }
+            return s;
+        }
     }
 
     inline Date readDate(const std::string& prompt) {

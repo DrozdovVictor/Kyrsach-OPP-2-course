@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 
 namespace kyrsach {
@@ -9,8 +9,8 @@ namespace kyrsach {
 		int year = 2000;
 	};
 
-	// Перегрузка оператора ВВОДА для Date.
-    // Не friend: поля Date публичные (struct).
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° Р’Р’РћР”Рђ РґР»СЏ Date.
+    // РќРµ friend: РїРѕР»СЏ Date РїСѓР±Р»РёС‡РЅС‹Рµ (struct).
 	inline std::istream& operator>>(std::istream& is, Date& d) {
 		is >> d.day >> d.month >> d.year;
 		return is;
@@ -35,7 +35,7 @@ namespace kyrsach {
 		Person(int id, const std::string& fullName, const Date& birthDay, const ContactInfo& contacts)
 			: id(id), fullName(fullName), birthDay(birthDay), contacts(contacts) {
 		}
-		friend class Storage;
+		friend class Storage; // в†ђ РґРѕСЃС‚СѓРї Рє nextId
 
 		int getId() const {
 			return id;
@@ -57,8 +57,8 @@ namespace kyrsach {
 			return nextId++;
 		}
 
-		Person(const Person&) = delete; // запрет копирования
-		Person& operator=(const Person&) = delete; // запрет присваивания
+		Person(const Person&) = delete; // Р·Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+		Person& operator=(const Person&) = delete; // Р·Р°РїСЂРµС‚ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 
 		friend std::ostream& operator<<(std::ostream& os, const Person& p) {
 			os << "#" << p.id << " ";
