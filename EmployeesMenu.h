@@ -158,18 +158,6 @@ inline void printEmployeeDetails(Employee* e) {
     std::cout << "\n--- Карточка сотрудника ---\n";
     t.print();
 }
-inline void printOperationsMenu() {
-    std::cout << "\n--- ОПЕРАЦИИ С СОТРУДНИКОМ ---\n"
-        << "  1. Сменить статус\n"
-        << "  2. Назначить должность\n"
-        << "  3. Добавить навык (только для разработчика)\n"
-        << "  4. Показать навыки (только для разработчика)\n"
-        << "  5. Показать подробную информацию\n"
-        << "  6. Добавить подчинённого (только для менеджера)\n"
-        << "  7. Отметить найм (только для HR)\n"
-        << "  0. Назад\n"
-        << "------------------------------\n";
-}
 inline void changeStatus(Employee* e) {
     int s = readInt("Ввод: 0-работает, 1-отпуск, 2-уволен, -1-отмена: ", -1, 2);
     if (s == -1) return;
@@ -299,20 +287,46 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
 
     std::cout << "\nВыбран сотрудник:\n  " << *e;
 
+    // Один раз проверяем тип сотрудника
+    Developer* dev = dynamic_cast<Developer*>(e);
+    Manager* mgr = dynamic_cast<Manager*>(e);
+
     bool running = true;
     while (running) {
-        printOperationsMenu();
-        int choice = readInt("Выбор: ", 0, 6);
+        std::cout << "\n--- ОПЕРАЦИИ С СОТРУДНИКОМ ---\n";
+        std::cout << "  1. Сменить статус\n";
+        std::cout << "  2. Назначить должность\n";
+        std::cout << "  3. Показать подробную информацию\n";
 
-        switch (choice) {
-        case 1: changeStatus(e); break;
-        case 2: assignPosition(e, positions); break;
-        case 3: addSkill(e); break;
-        case 4: showSkills(e); break;
-        case 5: printEmployeeDetails(e); break;
-        case 6: addSubordinate(e, employees); break;
-        case 0: running = false; break;
+        // Переменные для хранения номеров специфичных пунктов
+        int optAddSkill = -1, optShowSkills = -1, optAddSub = -1;
+        int nextNum = 4; // Следующий свободный номер
+
+        if (dev != nullptr) {
+            std::cout << "  " << nextNum << ". Добавить навык\n";
+            optAddSkill = nextNum++;
+            std::cout << "  " << nextNum << ". Показать навыки\n";
+            optShowSkills = nextNum++;
         }
+        if (mgr != nullptr) {
+            std::cout << "  " << nextNum << ". Добавить подчинённого\n";
+            optAddSub = nextNum++;
+        }
+
+        std::cout << "  0. Назад\n";
+        std::cout << "------------------------------\n";
+
+        // Максимально возможный выбор зависит от того, сколько пунктов мы вывели
+        int choice = readInt("Выбор: ", 0, nextNum - 1);
+
+        // Вместо switch используем if/else, так как номера динамические
+        if (choice == 1) changeStatus(e);
+        else if (choice == 2) assignPosition(e, positions);
+        else if (choice == 3) printEmployeeDetails(e);
+        else if (choice == optAddSkill) addSkill(e);
+        else if (choice == optShowSkills) showSkills(e);
+        else if (choice == optAddSub) addSubordinate(e, employees);
+        else if (choice == 0) running = false;
     }
 }
 
