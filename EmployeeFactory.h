@@ -12,6 +12,7 @@ namespace kyrsach {
 
     public:
         EmployeeFactory() = delete;
+        friend class Storage;
 
         static Developer* createDeveloper(
             const std::string& fullName,

@@ -35,6 +35,7 @@ namespace kyrsach {
 		Person(int id, const std::string& fullName, const Date& birthDay, const ContactInfo& contacts)
 			: id(id), fullName(fullName), birthDay(birthDay), contacts(contacts) {
 		}
+		friend class Storage;
 
 		int getId() const {
 			return id;
