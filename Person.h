@@ -19,7 +19,6 @@ namespace kyrsach {
 	struct ContactInfo {
 		std::string phone;
 		std::string email;
-		std::string address;
 	};
 
 	class Person {

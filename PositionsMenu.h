@@ -26,9 +26,8 @@ inline Position* createPositionInteractive() {
     int grade = readInt(
         "Грейд (0-юниор, 1-мидл, 2-сеньор, 3-лид): ",
         GRADE_JUNIOR, GRADE_LEAD);
-    double salary = readDouble("Базовый оклад: ", 0.0);
 
-    return new Position(title, grade, salary);
+    return new Position(title, grade);
 }
 inline void positionsMenu(Repository<Position>& positions) {
     bool running = true;
@@ -46,7 +45,6 @@ inline void positionsMenu(Repository<Position>& positions) {
                 for (Position* p : positions.getAll()) {
                     std::cout << "  " << p->getTitle()
                         << " | грейд: " << p->getGrade()
-                        << " | оклад: " << p->getBaseSalary()
                         << "\n";
                 }
             }

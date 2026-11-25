@@ -18,42 +18,39 @@ namespace kyrsach {
             const Date& birthDay,
             const ContactInfo& contacts,
             const Date& hireDate,
-            double baseSalary,
             int grade)
         {
             return new Developer(
                 Person::generateId(),
                 fullName, birthDay, contacts,
                 nextPersonnelNumber++,
-                hireDate, baseSalary, grade);
+                hireDate, grade);
         }
 
         static Manager* createManager(
             const std::string& fullName,
             const Date& birthDay,
             const ContactInfo& contacts,
-            const Date& hireDate,
-            double baseSalary)
+            const Date& hireDate)
         {
             return new Manager(
                 Person::generateId(),
                 fullName, birthDay, contacts,
                 nextPersonnelNumber++,
-                hireDate, baseSalary);
+                hireDate);
         }
 
         static HRSpecialist* createHR(
             const std::string& fullName,
             const Date& birthDay,
             const ContactInfo& contacts,
-            const Date& hireDate,
-            double baseSalary)
+            const Date& hireDate)
         {
             return new HRSpecialist(
                 Person::generateId(),
                 fullName, birthDay, contacts,
                 nextPersonnelNumber++,
-                hireDate, baseSalary);
+                hireDate);
         }
 
         static Candidate* createCandidate(
@@ -67,4 +64,4 @@ namespace kyrsach {
         }
     };
 
-}  // namespace kyrsach
+}

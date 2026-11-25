@@ -86,7 +86,6 @@ namespace kyrsach {
         ContactInfo c;
         c.phone = readLine("Телефон: ");
         c.email = readLine("Email:   ");
-        c.address = readLine("Адрес:   ");
         return c;
     }
 

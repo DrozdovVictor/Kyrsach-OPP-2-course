@@ -9,28 +9,16 @@ namespace kyrsach {
 
     class Manager : public Employee {
         std::vector<Employee*> subordinates; // агрегация, не владеет (подчинённые)
-        double bonus = 0.0; // премия
 
     public:
         Manager(int id, const std::string& fullName,
             const Date& birthDay, const ContactInfo& contacts,
-            int personnelNumber, const Date& hireDate, double baseSalary)
+            int personnelNumber, const Date& hireDate)
             : Employee(id, fullName, birthDay, contacts,
-                personnelNumber, hireDate, baseSalary),
-            bonus(0.0) {
-        }
+                personnelNumber, hireDate) {}
 
         void addSubordinate(Employee* e) {
             subordinates.push_back(e);
-        }
-        void setBonus(double b) {
-            if (b < 0) throw ValidationException("Бонус не может быть отрицательным");
-            bonus = b;
-        }
-
-        double calculateSalary() const override {
-            return getBaseSalary() + bonus
-                + 100.0 * static_cast<int>(subordinates.size());
         }
 
         std::string getDuties() const override {

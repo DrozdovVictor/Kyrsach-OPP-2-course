@@ -32,7 +32,7 @@ inline Developer* createDeveloperInteractive() {
         GRADE_JUNIOR, GRADE_LEAD);
 
     Developer* dev = EmployeeFactory::createDeveloper(
-        name, birth, contacts, hire, salary, grade);
+        name, birth, contacts, hire, grade);
     return dev;
 }
 inline Manager* createManagerInteractive() {
@@ -52,8 +52,7 @@ inline Manager* createManagerInteractive() {
     double bonus = readDouble("Бонус: ", 0.0);
 
     Manager* m = EmployeeFactory::createManager(
-        name, birth, contacts, hire, salary);
-    m->setBonus(bonus);
+        name, birth, contacts, hire);
     return m;
 }
 inline HRSpecialist* createHRInteractive() {
@@ -71,7 +70,7 @@ inline HRSpecialist* createHRInteractive() {
     Date hire = readDate("Дата найма");
     double salary = readDouble("Базовый оклад: ", 0.0);
 
-    return EmployeeFactory::createHR(name, birth, contacts, hire, salary);
+    return EmployeeFactory::createHR(name, birth, contacts, hire);
 }
 inline void createEmployeeMenu(Repository<Employee>& employees) {
     bool running = true;
@@ -129,9 +128,7 @@ inline void createEmployeeMenu(Repository<Employee>& employees) {
 inline void printEmployeeDetails(Employee* e) {
     std::cout << "\n--- Карточка сотрудника ---\n";
     std::cout << *e;   // краткая строка через operator<<
-    std::cout << "  оклад      : " << e->getBaseSalary() << "\n"
-        << "  зарплата   : " << e->calculateSalary() << "\n"
-        << "  статус     : " << e->getStatus() << "\n"
+    std::cout << "  статус     : " << e->getStatus() << "\n"
         << "  навыков    : " << e->getSkillsCount() << "\n"
         << "  обязанности: " << e->getDuties() << "\n";
 }
@@ -143,9 +140,8 @@ inline void printOperationsMenu() {
         << "  4. Добавить навык\n"
         << "  5. Показать подробную информацию\n"
         << "  6. Добавить технологию [Developer]\n"
-        << "  7. Задать бонус [Manager]\n"
-        << "  8. Добавить подчинённого [Manager]\n"
-        << "  9. Отметить найм [HRSpecialist]\n"
+        << "  7. Добавить подчинённого [Manager]\n"
+        << "  8. Отметить найм [HRSpecialist]\n"
         << "  0. Назад\n"
         << "------------------------------\n";
 }
@@ -179,8 +175,7 @@ inline void assignPosition(Employee* e, Repository<Position>& positions) {
     std::cout << "\nДоступные должности:\n";
     for (int i = 0; i < static_cast<int>(list.size()); ++i) {
         std::cout << "  " << (i + 1) << ". " << list[i]->getTitle()
-            << " | грейд: " << list[i]->getGrade()
-            << " | оклад: " << list[i]->getBaseSalary() << "\n";
+            << " | грейд: " << list[i]->getGrade();
     }
     int idx = readInt("Выберите номер (0-отмена): ", 0, static_cast<int>(list.size()));
     if (idx == 0) return;
@@ -233,22 +228,6 @@ inline void addTechnology(Employee* e) {
     dev->addTechnology(tech);
     std::cout << "Технология добавлена (всего: "
         << dev->getTechCount() << ").\n";
-}
-// Manager: задать бонус
-inline void setBonus(Employee* e) {
-    Manager* mgr = dynamic_cast<Manager*>(e);
-    if (mgr == nullptr) {
-        std::cout << "Операция только для менеджера.\n";
-        return;
-    }
-    double bonus = readDouble("Бонус: ", 0.0);
-    try {
-        mgr->setBonus(bonus);
-        std::cout << "Бонус установлен.\n";
-    }
-    catch (const ValidationException& ex) {
-        std::cout << "Ошибка: " << ex.what() << "\n";
-    }
 }
 // Manager: добавить подчинённого
 // Здесь ДВЕ проверки:
@@ -321,7 +300,7 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printOperationsMenu();
-        int choice = readInt("Выбор: ", 0, 9);
+        int choice = readInt("Выбор: ", 0, 8);
 
         switch (choice) {
         case 1: changeStatus(e); break;
@@ -330,9 +309,8 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
         case 4: addSkill(e); break;
         case 5: printEmployeeDetails(e); break;
         case 6: addTechnology(e); break;
-        case 7: setBonus(e); break;
-        case 8: addSubordinate(e, employees); break;
-        case 9: incrementHired(e); break;
+        case 7: addSubordinate(e, employees); break;
+        case 8: incrementHired(e); break;
         case 0: running = false; break;
         }
     }

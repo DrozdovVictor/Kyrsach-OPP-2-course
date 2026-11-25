@@ -14,10 +14,9 @@ namespace kyrsach {
     public:
         Developer(int id, const std::string& fullName,
             const Date& birthDay, const ContactInfo& contacts,
-            int personnelNumber, const Date& hireDate,
-            double baseSalary, int grade)
+            int personnelNumber, const Date& hireDate, int grade)
             : Employee(id, fullName, birthDay, contacts,
-                personnelNumber, hireDate, baseSalary),
+                personnelNumber, hireDate),
             grade(grade) {
             if (grade < GRADE_JUNIOR || grade > GRADE_LEAD)
                 throw ValidationException("Неверный грейд: " + std::to_string(grade));
@@ -25,15 +24,6 @@ namespace kyrsach {
 
         void addTechnology(const std::string& t) {
             techStack.push_back(t);
-        }
-
-        double calculateSalary() const override {
-            double k = 1.0;
-            if (grade == GRADE_JUNIOR) k = 1.0;
-            else if (grade == GRADE_MIDDLE) k = 1.5;
-            else if (grade == GRADE_SENIOR) k = 2.2;
-            else if (grade == GRADE_LEAD)   k = 3.0;
-            return getBaseSalary() * k;
         }
 
         std::string getDuties() const override {

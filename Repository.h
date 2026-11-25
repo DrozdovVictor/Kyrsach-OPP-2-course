@@ -86,4 +86,4 @@ namespace kyrsach {
         }
     }
 
-}  // namespace kyrsach
+}

@@ -45,8 +45,7 @@ inline void candAssignPosition(Candidate* c, Repository<Position>& positions) {
     std::cout << "\nДоступные должности:\n";
     for (int i = 0; i < static_cast<int>(list.size()); ++i) {
         std::cout << "  " << (i + 1) << ". " << list[i]->getTitle()
-            << " | грейд: " << list[i]->getGrade()
-            << " | оклад: " << list[i]->getBaseSalary() << "\n";
+            << " | грейд: " << list[i]->getGrade();
     }
     int idx = readInt("Выберите номер (0-отмена): ", 0, static_cast<int>(list.size()));
     if (idx == 0) return;

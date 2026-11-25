@@ -12,20 +12,6 @@ inline bool isInStaff(Employee* e) {
     return e->getStatus() != STATUS_FIRED;
 }
 
-inline void reportTotalSalary(Repository<Employee>& employees) {
-    double total = 0.0;
-    int count = 0;
-    for (Employee* e : employees.getAll()) {
-        if (isInStaff(e)) {
-            total += e->calculateSalary();   // ← полиморфизм
-            ++count;
-        }
-    }
-    std::cout << "\n--- Фонд оплаты ---\n"
-        << "  Сотрудников в штате: " << count << "\n"
-        << "  Фонд оплаты:         " << total << "\n";
-}
-
 inline void reportByRoles(Repository<Employee>& employees) {
     int devCount = 0, mgrCount = 0, hrCount = 0;
     for (Employee* e : employees.getAll()) {
@@ -39,23 +25,6 @@ inline void reportByRoles(Repository<Employee>& employees) {
         << "  Менеджеры       : " << mgrCount << "\n"
         << "  HR-специалисты  : " << hrCount << "\n"
         << "  Всего           : " << (devCount + mgrCount + hrCount) << "\n";
-}
-
-inline void reportAverageSalary(Repository<Employee>& employees) {
-    double total = 0.0;
-    int count = 0;
-    for (Employee* e : employees.getAll()) {
-        if (isInStaff(e)) {
-            total += e->calculateSalary();
-            ++count;
-        }
-    }
-    std::cout << "\n--- Средняя зарплата ---\n";
-    if (count == 0) {
-        std::cout << "  В штате нет сотрудников.\n";
-        return;
-    }
-    std::cout << "  Средняя: " << (total / count) << "\n";
 }
 
 inline void reportCandidatesByStatus(Repository<Candidate>& candidates) {
@@ -77,10 +46,8 @@ inline void reportCandidatesByStatus(Repository<Candidate>& candidates) {
 
 inline void printReportsMenu() {
     std::cout << "\n--- ОТЧЁТЫ ---\n"
-        << "  1. Фонд оплаты\n"
-        << "  2. Распределение по ролям\n"
-        << "  3. Средняя зарплата\n"
-        << "  4. Кандидаты по статусам\n"
+        << "  1. Распределение по ролям\n"
+        << "  2. Кандидаты по статусам\n"
         << "  0. Назад\n"
         << "--------------\n";
 }
@@ -90,13 +57,11 @@ inline void reportsMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printReportsMenu();
-        int choice = readInt("Выбор: ", 0, 4);
+        int choice = readInt("Выбор: ", 0, 2);
 
         switch (choice) {
-        case 1: reportTotalSalary(employees); break;
-        case 2: reportByRoles(employees); break;
-        case 3: reportAverageSalary(employees); break;
-        case 4: reportCandidatesByStatus(candidates); break;
+        case 1: reportByRoles(employees); break;
+        case 2: reportCandidatesByStatus(candidates); break;
         case 0: running = false; break;
         }
     }

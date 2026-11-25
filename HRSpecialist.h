@@ -12,18 +12,14 @@ namespace kyrsach {
     public:
         HRSpecialist(int id, const std::string& fullName,
             const Date& birthDay, const ContactInfo& contacts,
-            int personnelNumber, const Date& hireDate, double baseSalary)
+            int personnelNumber, const Date& hireDate)
             : Employee(id, fullName, birthDay, contacts,
-                personnelNumber, hireDate, baseSalary),
+                personnelNumber, hireDate),
             hiredThisYear(0) {
         }
 
         void incrementHired() {
             ++hiredThisYear;
-        }
-
-        double calculateSalary() const override {
-            return getBaseSalary() + 50.0 * hiredThisYear;
         }
 
         std::string getDuties() const override {

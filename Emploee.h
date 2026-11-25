@@ -34,12 +34,11 @@ namespace kyrsach {
     class Position {
         std::string title;
         int grade = GRADE_JUNIOR;
-        double baseSalary = 0.0;
 
     public:
         Position() = default;
-        Position(const std::string& title, int grade, double baseSalary)
-            : title(title), grade(grade), baseSalary(baseSalary) {
+        Position(const std::string& title, int grade)
+            : title(title), grade(grade) {
         }
 
         const std::string& getTitle() const {
@@ -47,9 +46,6 @@ namespace kyrsach {
         }
         int getGrade() const {
             return grade;
-        }
-        double getBaseSalary() const {
-            return baseSalary;
         }
 
         bool operator==(const Position& other) const {
@@ -79,7 +75,6 @@ namespace kyrsach {
     protected:
         int personnelNumber = 0; // id только чисто для работников, а не для всех
         Date hireDate;
-        double baseSalary = 0.0; // базовый оклад (то, что сотрудник получает до всех надбавок, бонусов и т.д.)
         int status = 0;
 
         Position* position = nullptr;   // ассоциация, не владеет
@@ -89,18 +84,16 @@ namespace kyrsach {
     public:
         Employee(int id, const std::string& fullName,
             const Date& birthDay, const ContactInfo& contacts,
-            int personnelNumber, const Date& hireDate, double baseSalary)
+            int personnelNumber, const Date& hireDate)
             : Person(id, fullName, birthDay, contacts),
             personnelNumber(personnelNumber),
             hireDate(hireDate),
-            baseSalary(baseSalary),
             status(STATUS_ACTIVE),
             position(nullptr),
             account(nullptr) {}
 
         ~Employee() override = default;
 
-        virtual double calculateSalary() const = 0;
         virtual std::string getDuties() const = 0;
         virtual bool canManage() const {
             return false;
@@ -132,9 +125,6 @@ namespace kyrsach {
 
         int getStatus() const {
             return status;
-        }
-        double getBaseSalary() const {
-            return baseSalary;
         }
         int getSkillsCount() const {
             return static_cast<int>(skills.size());
