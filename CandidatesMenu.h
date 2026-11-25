@@ -55,12 +55,21 @@ inline void candAssignPosition(Candidate* c, Repository<Position>& positions) {
         << list[idx - 1]->getTitle() << "\n";
 }
 inline void candPrintDetails(Candidate* c) {
-    std::cout << "\n--- Карточка кандидата ---\n";
-    std::cout << *c;
-    std::cout << "  резюме   : " << c->getResume() << "\n";
-    std::cout << "  статус   : " << c->getStatus() << "\n";
+    Table t({ "Параметр", "Значение" });
+    t.addRow({ "ID", std::to_string(c->getId()) });
+    t.addRow({ "ФИО", c->getFullName() });
+
+    std::string statusStr = (c->getStatus() == CAND_NEW) ? "Новый" :
+        (c->getStatus() == CAND_INTERVIEW) ? "Собеседование" :
+        (c->getStatus() == CAND_OFFERED) ? "Оффер" : "Отказ";
+    t.addRow({ "Статус", statusStr });
+    t.addRow({ "Резюме", c->getResume() });
+
     Position* p = c->getDesiredPosition();
-    std::cout << "  желаемая : " << (p ? p->getTitle() : "—") << "\n";
+    t.addRow({ "Желаемая должность", p ? p->getTitle() : "—" });
+
+    std::cout << "\n--- Карточка кандидата ---\n";
+    t.print();
 }
 inline void menuCandidateOperations(Repository<Candidate>& candidates,
     Repository<Position>& positions) {
@@ -141,7 +150,7 @@ inline void candidatesMenu(Repository<Candidate>& candidates,
         switch (choice) {
         case 1: {
             std::cout << "\n=== Список кандидатов ===\n";
-            printAll(candidates);
+            printCandidatesTable(candidates);
             break;
         }
         case 2: {

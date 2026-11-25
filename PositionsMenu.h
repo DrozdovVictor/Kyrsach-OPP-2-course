@@ -2,8 +2,7 @@
 #include<iostream>
 
 #include"Classes.h"
-#include"Repository.h"
-#include"Input.h"
+#include"Utilities.h"
 
 using namespace kyrsach;
 
@@ -42,11 +41,7 @@ inline void positionsMenu(Repository<Position>& positions) {
                 std::cout << "  (пусто)\n";
             }
             else {
-                for (Position* p : positions.getAll()) {
-                    std::cout << "  " << p->getTitle()
-                        << " | грейд: " << p->getGrade()
-                        << "\n";
-                }
+                printPositionsTable(positions);
             }
             break;
         }

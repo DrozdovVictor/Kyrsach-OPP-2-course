@@ -26,7 +26,6 @@ inline Developer* createDeveloperInteractive() {
     Date birth = readDate("Дата рождения");
     ContactInfo contacts = readContactInfo("Контакты");
     Date hire = readDate("Дата найма");
-    double salary = readDouble("Базовый оклад: ", 0.0);
     int grade = readInt(
         "Грейд (0-джуниор, 1-мидл, 2-сеньор, 3-лид): ",
         GRADE_JUNIOR, GRADE_LEAD);
@@ -48,8 +47,6 @@ inline Manager* createManagerInteractive() {
     Date birth = readDate("Дата рождения");
     ContactInfo contacts = readContactInfo("Контакты");
     Date hire = readDate("Дата найма");
-    double salary = readDouble("Базовый оклад: ", 0.0);
-    double bonus = readDouble("Бонус: ", 0.0);
 
     Manager* m = EmployeeFactory::createManager(
         name, birth, contacts, hire);
@@ -68,7 +65,6 @@ inline HRSpecialist* createHRInteractive() {
     Date birth = readDate("Дата рождения");
     ContactInfo contacts = readContactInfo("Контакты");
     Date hire = readDate("Дата найма");
-    double salary = readDouble("Базовый оклад: ", 0.0);
 
     return EmployeeFactory::createHR(name, birth, contacts, hire);
 }
@@ -126,11 +122,38 @@ inline void createEmployeeMenu(Repository<Employee>& employees) {
 }
 
 inline void printEmployeeDetails(Employee* e) {
+    Table t({ "Параметр", "Значение" });
+    t.addRow({ "ID", std::to_string(e->getId()) });
+    t.addRow({ "ФИО", e->getFullName() });
+    t.addRow({ "Роль", e->getRole() });
+
+    std::string statusStr = (e->getStatus() == STATUS_ACTIVE) ? "Активен" :
+        (e->getStatus() == STATUS_VACATION) ? "Отпуск" : "Уволен";
+    t.addRow({ "Статус", statusStr });
+    t.addRow({ "Навыков", std::to_string(e->getSkillsCount()) });
+    t.addRow({ "Обязанности", e->getDuties() });
+
+    if (e->canManage()) {
+        t.addRow({ "Управляет", "Да" });
+    }
+
+    // Добавляем специфичные поля через dynamic_cast
+    if (auto dev = dynamic_cast<Developer*>(e)) {
+        std::string gradeStr = (dev->getGrade() == GRADE_JUNIOR) ? "Junior" :
+            (dev->getGrade() == GRADE_MIDDLE) ? "Middle" :
+            (dev->getGrade() == GRADE_SENIOR) ? "Senior" : "Lead";
+        t.addRow({ "Грейд", gradeStr });
+        t.addRow({ "Технологий", std::to_string(dev->getTechCount()) });
+    }
+    else if (auto mgr = dynamic_cast<Manager*>(e)) {
+        t.addRow({ "Подчинённых", std::to_string(mgr->getSubordinatesCount()) });
+    }
+    else if (auto hr = dynamic_cast<HRSpecialist*>(e)) {
+        t.addRow({ "Нанято за год", std::to_string(hr->getHiredThisYear()) });
+    }
+
     std::cout << "\n--- Карточка сотрудника ---\n";
-    std::cout << *e;   // краткая строка через operator<<
-    std::cout << "  статус     : " << e->getStatus() << "\n"
-        << "  навыков    : " << e->getSkillsCount() << "\n"
-        << "  обязанности: " << e->getDuties() << "\n";
+    t.print();
 }
 inline void printOperationsMenu() {
     std::cout << "\n--- ОПЕРАЦИИ С СОТРУДНИКОМ ---\n"
@@ -320,7 +343,7 @@ inline void employeesMenu(Repository<Employee>& employees,
         switch (choice) {
         case 1: {
             std::cout << "\n=== Список сотрудников ===\n";
-            printAll(employees);
+            printEmployeesTable(employees);
             break;
         }
         case 2: {

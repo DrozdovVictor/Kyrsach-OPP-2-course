@@ -81,17 +81,4 @@ namespace kyrsach {
             items.clear();
         }
     };
-
-    // Ўаблонна€ функци€ Ч печатает всЄ, что поддерживает operator<<
-    template<typename T>
-    void printAll(const Repository<T>& repo) {
-        if (repo.empty()) {
-            std::cout << "  (пусто)\n";
-            return;
-        }
-        for (T* item : repo.getAll()) {
-            std::cout << "  " << *item;
-        }
-    }
-
 }

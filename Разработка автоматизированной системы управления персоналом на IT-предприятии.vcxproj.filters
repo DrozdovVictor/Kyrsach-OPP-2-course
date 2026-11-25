@@ -83,6 +83,9 @@
     <ClInclude Include="Login.h">
       <Filter>Файлы заголовков\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>Файлы заголовков\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

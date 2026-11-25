@@ -148,6 +148,7 @@
     <ClInclude Include="ReportsMenu.h" />
     <ClInclude Include="Repository.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
