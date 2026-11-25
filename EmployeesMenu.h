@@ -136,12 +136,11 @@ inline void printOperationsMenu() {
     std::cout << "\n--- ОПЕРАЦИИ С СОТРУДНИКОМ ---\n"
         << "  1. Сменить статус\n"
         << "  2. Назначить должность\n"
-        << "  3. Создать учётку\n"
-        << "  4. Добавить навык\n"
-        << "  5. Показать подробную информацию\n"
-        << "  6. Добавить технологию [Developer]\n"
-        << "  7. Добавить подчинённого [Manager]\n"
-        << "  8. Отметить найм [HRSpecialist]\n"
+        << "  3. Добавить навык\n"
+        << "  4. Показать подробную информацию\n"
+        << "  5. Добавить технологию [Developer]\n"
+        << "  6. Добавить подчинённого [Manager]\n"
+        << "  7. Отметить найм [HRSpecialist]\n"
         << "  0. Назад\n"
         << "------------------------------\n";
 }
@@ -182,19 +181,6 @@ inline void assignPosition(Employee* e, Repository<Position>& positions) {
 
     e->setPosition(list[idx - 1]);
     std::cout << "Должность назначена.\n";
-}
-inline void createAccount(Employee* e) {
-    std::string login = readLine("Логин: ");
-    if (login.empty()) {
-        std::cout << "Логин не может быть пустым.\n";
-        return;
-    }
-    std::string hash = readLine("Хэш пароля: ");
-    int role = readInt("Роль (0-админ, 1-HR, 2-менеджер, 3-сотрудник): ",
-        ROLE_ADMIN, ROLE_EMPLOYEE);
-
-    e->setAccount(std::make_unique<UserAccount>(login, hash, role));
-    std::cout << "Учётка создана (логин: " << login << ").\n";
 }
 inline void addSkill(Employee* e) {
     std::string name = readLine("Название навыка: ");
@@ -300,17 +286,16 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printOperationsMenu();
-        int choice = readInt("Выбор: ", 0, 8);
+        int choice = readInt("Выбор: ", 0, 7);
 
         switch (choice) {
         case 1: changeStatus(e); break;
         case 2: assignPosition(e, positions); break;
-        case 3: createAccount(e); break;
-        case 4: addSkill(e); break;
-        case 5: printEmployeeDetails(e); break;
-        case 6: addTechnology(e); break;
-        case 7: addSubordinate(e, employees); break;
-        case 8: incrementHired(e); break;
+        case 3: addSkill(e); break;
+        case 4: printEmployeeDetails(e); break;
+        case 5: addTechnology(e); break;
+        case 6: addSubordinate(e, employees); break;
+        case 7: incrementHired(e); break;
         case 0: running = false; break;
         }
     }

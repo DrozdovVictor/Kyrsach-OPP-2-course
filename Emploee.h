@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include<vector>
-#include <memory>      // для std::unique_ptr
-#include <utility>     // для std::move
 
 #include"Person.h"
 #include "Exceptions.h"
@@ -53,24 +51,6 @@ namespace kyrsach {
         }
     };
 
-    class UserAccount {
-        std::string login;
-        std::string passwordHash;
-        int role = ROLE_ADMIN;
-    public:
-        UserAccount() = default;
-        UserAccount(const std::string& login, const std::string& hash, int role)
-            : login(login), passwordHash(hash), role(role) {
-        }
-
-        const std::string& getLogin() const {
-            return login;
-        }
-        int getRole() const {
-            return role;
-        }
-    };
-
     class Employee : public Person {
     protected:
         int personnelNumber = 0; // id только чисто для работников, а не для всех
@@ -78,7 +58,6 @@ namespace kyrsach {
         int status = 0;
 
         Position* position = nullptr;   // ассоциация, не владеет
-        std::unique_ptr<UserAccount> account;  // композиция (умный указатель)
         std::vector<Skill> skills;      // композиция, по значению
 
     public:
@@ -89,8 +68,8 @@ namespace kyrsach {
             personnelNumber(personnelNumber),
             hireDate(hireDate),
             status(STATUS_ACTIVE),
-            position(nullptr),
-            account(nullptr) {}
+            position(nullptr)
+        {}
 
         ~Employee() override = default;
 
@@ -101,9 +80,6 @@ namespace kyrsach {
 
         void setPosition(Position* p) {
             position = p;
-        }
-        void setAccount(std::unique_ptr<UserAccount> a) {
-            account = std::move(a);   // старое автоматически удалится
         }
 
         void setStatus(int s) {
