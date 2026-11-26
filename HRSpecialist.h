@@ -15,7 +15,7 @@ namespace kyrsach {
                 personnelNumber, hireDate) {}
 
         std::string getDuties() const override {
-            return "Найм, адаптация и учёт персонала";
+            return "Найм сотрудников";
         }
         std::string getRole() const override {
             return "HR-специалист";

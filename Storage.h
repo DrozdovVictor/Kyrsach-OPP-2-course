@@ -46,7 +46,7 @@ namespace kyrsach {
 
                 if (auto d = dynamic_cast<Developer*>(e)) {
                     type = "D";
-                    extra = std::to_string(d->getGrade()) + "|";
+                    extra = std::to_string(d->getGrade()) + ",";
                     const auto& skills = d->getSkills();
                     for (size_t i = 0; i < skills.size(); ++i) {
                         extra += skills[i].name + ":" + std::to_string(skills[i].level);
@@ -159,7 +159,7 @@ namespace kyrsach {
                 Employee* emp = nullptr;
 
                 if (type == "D") {
-                    auto ext = split(extra, '|');
+                    auto ext = split(extra, ',');
                     int grade = (!ext.empty() && !ext[0].empty()) ? std::stoi(ext[0]) : 0;
                     auto dev = new Developer(id, name, bd, ci, pn, hd, grade);
 
@@ -212,7 +212,7 @@ namespace kyrsach {
                 catch (...) { /* Игнорируем битые ссылки */ }
             }
 
-            Person::nextId = maxId + 1;
+            Employee::nextId = maxId + 1;
             EmployeeFactory::nextPersonnelNumber = maxPersonnel + 1;
         }
         static void loadCandidates(const std::string& filename,
@@ -222,7 +222,7 @@ namespace kyrsach {
             if (!in) return;
 
             std::string line;
-            int maxId = Person::nextId - 1; // Учитываем тех, кто уже загрузился (сотрудники)
+            int maxId = Candidate::nextId - 1; // Учитываем тех, кто уже загрузился (сотрудники)
 
             while (std::getline(in, line)) {
                 if (line.empty() || line[0] == '#') continue;
@@ -249,7 +249,7 @@ namespace kyrsach {
                 candidates.add(cand);
             }
 
-            Person::nextId = maxId + 1;
+            Candidate::nextId = maxId + 1;
         }
 
         // Обёртки (Вызов всех файлов сразу)

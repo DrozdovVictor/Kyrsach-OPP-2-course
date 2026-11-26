@@ -22,7 +22,7 @@ namespace kyrsach {
             int grade)
         {
             return new Developer(
-                Person::generateId(),
+                Employee::generateId(),
                 fullName, birthDay, contacts,
                 nextPersonnelNumber++,
                 hireDate, grade);
@@ -35,7 +35,7 @@ namespace kyrsach {
             const Date& hireDate)
         {
             return new Manager(
-                Person::generateId(),
+                Employee::generateId(),
                 fullName, birthDay, contacts,
                 nextPersonnelNumber++,
                 hireDate);
@@ -48,7 +48,7 @@ namespace kyrsach {
             const Date& hireDate)
         {
             return new HRSpecialist(
-                Person::generateId(),
+                Employee::generateId(),
                 fullName, birthDay, contacts,
                 nextPersonnelNumber++,
                 hireDate);
@@ -60,7 +60,7 @@ namespace kyrsach {
             const ContactInfo& contacts)
         {
             return new Candidate(
-                Person::generateId(),
+                Candidate::generateId(),
                 fullName, birthDay, contacts);
         }
     };

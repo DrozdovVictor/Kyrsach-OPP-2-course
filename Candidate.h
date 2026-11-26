@@ -17,12 +17,19 @@ namespace kyrsach {
         Position* desiredPosition = nullptr;   // ассоциация, не владеет
         int status = 0;                        // CAND_NEW = 0
 
+        inline static int nextId = 1;
+        friend class Storage; // Чтобы Storage мог обновлять nextId при загрузке
+
     public:
         Candidate(int id, const std::string& fullName,
             const Date& birthDay, const ContactInfo& contacts)
             : Person(id, fullName, birthDay, contacts),
             desiredPosition(nullptr),
             status(0) {
+        }
+
+        static int generateId() { 
+            return nextId++; 
         }
 
         void setResume(const std::string& r) {

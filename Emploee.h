@@ -54,6 +54,9 @@ namespace kyrsach {
 
         Position* position = nullptr;   // ассоциация, не владеет
 
+        inline static int nextId = 1;
+        friend class Storage; // Чтобы Storage мог обновлять nextId при загрузке
+
     public:
         Employee(int id, const std::string& fullName,
             const Date& birthDay, const ContactInfo& contacts,
@@ -70,6 +73,10 @@ namespace kyrsach {
         virtual std::string getDuties() const = 0;
         virtual bool canManage() const {
             return false;
+        }
+
+        static int generateId() { 
+            return nextId++; 
         }
 
         void setPosition(Position* p) {

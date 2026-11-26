@@ -28,8 +28,6 @@ namespace kyrsach {
 		Date birthDay;
 		ContactInfo contacts;
 
-		static inline int nextId = 1;
-
 	public:
 		Person() = default;
 		Person(int id, const std::string& fullName, const Date& birthDay, const ContactInfo& contacts)
@@ -51,10 +49,6 @@ namespace kyrsach {
 		}
 		const ContactInfo& getContacts() const { 
 			return contacts; 
-		}
-
-		static int generateId() {
-			return nextId++;
 		}
 
 		Person(const Person&) = delete; // запрет копирования

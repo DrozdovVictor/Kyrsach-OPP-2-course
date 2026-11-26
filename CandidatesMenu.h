@@ -5,6 +5,8 @@
 
 using namespace kyrsach;
 
+inline std::string gradeToStr(int g);
+
 inline void printCandidateOperationsMenu() {
     std::cout << "\n--- ОПЕРАЦИИ С КАНДИДАТОМ ---\n"
         << "  1. Сменить статус\n"
@@ -40,19 +42,20 @@ inline void candAssignPosition(Candidate* c, Repository<Position>& positions) {
         std::cout << "Нет должностей. Сначала создайте их в разделе «Должности».\n";
         return;
     }
-
     std::vector<Position*> list = positions.getAll();
-    std::cout << "\nДоступные должности:\n";
+
+    // Табличный вывод
+    Table t({ "#", "Название", "Грейд" });
     for (int i = 0; i < static_cast<int>(list.size()); ++i) {
-        std::cout << "  " << (i + 1) << ". " << list[i]->getTitle()
-            << " | грейд: " << list[i]->getGrade();
+        t.addRow({ std::to_string(i + 1), list[i]->getTitle(), gradeToStr(list[i]->getGrade()) });
     }
+    t.print();
+
     int idx = readInt("Выберите номер (0-отмена): ", 0, static_cast<int>(list.size()));
     if (idx == 0) return;
 
     c->setDesiredPosition(list[idx - 1]);
-    std::cout << "Желаемая должность назначена: "
-        << list[idx - 1]->getTitle() << "\n";
+    std::cout << "Желаемая должность назначена: " << list[idx - 1]->getTitle() << "\n";
 }
 inline void candPrintDetails(Candidate* c) {
     Table t({ "Параметр", "Значение" });
