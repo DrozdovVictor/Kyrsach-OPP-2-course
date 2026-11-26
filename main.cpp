@@ -60,7 +60,7 @@ int main() {
         switch (choice) {
         case 1: employeesMenu(employees, positions, candidates); break;
         case 2: candidatesMenu(candidates, positions); break;
-        case 3: positionsMenu(positions); break;
+        case 3: positionsMenu(positions, employees, candidates); break;
         case 4: reportsMenu(employees, candidates); break;
         case 5: {
             try {

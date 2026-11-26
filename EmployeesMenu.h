@@ -338,6 +338,7 @@ inline void hireCandidate(Repository<Employee>& employees, Repository<Candidate>
         return;
     }
 
+    // Выводим таблицу всех кандидатов
     Table t({ "ID", "ФИО", "Желаемая должность", "Статус" });
     for (Candidate* c : candidates.getAll()) {
         std::string st = (c->getStatus() == CAND_NEW) ? "Новый" :
@@ -353,37 +354,47 @@ inline void hireCandidate(Repository<Employee>& employees, Repository<Candidate>
 
     Candidate* c = nullptr;
     try { c = candidates.findById(id); }
-    catch (const NotFoundException& ex) { std::cout << ex.what() << "\n"; return; }
+    catch (const NotFoundException& ex) { std::cout << "Ошибка: " << ex.what() << "\n"; return; }
 
     if (c->getStatus() == CAND_OFFERED) {
-        std::cout << "Этот кандидат уже принят на работу (статус 'Оффер').\n";
+        std::cout << "Этот кандидат уже принят на работу.\n";
         return;
     }
 
-    std::cout << "Кем будет работать " << c->getFullName() << "?\n"
-        << "  1. Разработчик\n  2. Менеджер\n  3. HR-специалист\n";
+    // Спрашиваем, на какую роль его берем
+    std::cout << "\nКем будет работать " << c->getFullName() << " в компании?\n"
+        << "  1. Разработчик\n"
+        << "  2. Менеджер\n"
+        << "  3. HR-специалист\n";
     int role = readInt("Выбор: ", 1, 3);
 
-    Date today = { 1, 1, 2024 }; // Для простоты берем фиксированную дату или можно спросить
+    Date today = readDate("Дата найма");
     Employee* newEmp = nullptr;
 
-    if (role == 1) {
-        int grade = readInt("Грейд (0-юниор, 1-мидл, 2-сеньор, 3-лид): ", GRADE_JUNIOR, GRADE_LEAD);
+    // Создаем сотрудника через фабрику
+    if (role == 1) { // Разработчик
+        // Спрашиваем грейд (потому что в этой компании у него может быть другой уровень)
+        int grade = readInt("Уровень (0-джуниор, 1-мидл, 2-сеньор, 3-лид): ", GRADE_JUNIOR, GRADE_LEAD);
         newEmp = EmployeeFactory::createDeveloper(c->getFullName(), c->getBirthDay(), c->getContacts(), today, grade);
     }
-    else if (role == 2) {
+    else if (role == 2) { // Менеджер
         newEmp = EmployeeFactory::createManager(c->getFullName(), c->getBirthDay(), c->getContacts(), today);
     }
-    else {
+    else { // HR
         newEmp = EmployeeFactory::createHR(c->getFullName(), c->getBirthDay(), c->getContacts(), today);
     }
 
-    // Если у кандидата была желаемая должность, назначаем её сотруднику
-    if (c->getDesiredPosition()) newEmp->setPosition(c->getDesiredPosition());
+    // Если у кандидата была желаемая должность, назначаем её
+    if (c->getDesiredPosition() != nullptr) {
+        newEmp->setPosition(c->getDesiredPosition());
+    }
 
+    // Добавляем в сотрудники и удаляем из кандидатов
     employees.add(newEmp);
-    c->setStatus(CAND_OFFERED); // Меняем статус кандидата
-    std::cout << "Кандидат успешно принят на работу! Создан сотрудник #" << newEmp->getId() << "\n";
+    std::cout << "Кандидат успешно принят на работу как " << newEmp->getRole() << "!\n";
+    std::cout << "Создан сотрудник #" << newEmp->getId() << "\n";
+
+    candidates.removeById(id);
 }
 
 inline void employeeOperationsMenu(Repository<Employee>& employees,

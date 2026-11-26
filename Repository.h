@@ -65,6 +65,14 @@ namespace kyrsach {
             throw NotFoundException("Объект с id=" + std::to_string(id) + " не найден");
         }
 
+        // Метод удаления по индексу
+        void removeAt(int index) {
+            if (index >= 0 && index < static_cast<int>(items.size())) {
+                //delete items[index];
+                items.erase(items.begin() + index);
+            }
+        }
+
         std::vector<T*> getAll() const {
             std::vector<T*> result;
             result.reserve(items.size());

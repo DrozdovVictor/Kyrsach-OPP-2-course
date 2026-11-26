@@ -20,11 +20,13 @@ inline void reportByRoles(Repository<Employee>& employees) {
         else if (dynamic_cast<Manager*>(e) != nullptr) ++mgrCount;
         else if (dynamic_cast<HRSpecialist*>(e) != nullptr) ++hrCount;
     }
-    std::cout << "\n--- Распределение по ролям ---\n"
-        << "  Разработчики    : " << devCount << "\n"
-        << "  Менеджеры       : " << mgrCount << "\n"
-        << "  HR-специалисты  : " << hrCount << "\n"
-        << "  Всего           : " << (devCount + mgrCount + hrCount) << "\n";
+
+    Table t({ "Роль", "Количество" });
+    t.addRow({ "Разработчики", std::to_string(devCount) });
+    t.addRow({ "Менеджеры", std::to_string(mgrCount) });
+    t.addRow({ "HR-специалисты", std::to_string(hrCount) });
+    t.addRow({ "Всего", std::to_string(devCount + mgrCount + hrCount) });
+    t.print();
 }
 
 inline void reportCandidatesByStatus(Repository<Candidate>& candidates) {
@@ -36,12 +38,14 @@ inline void reportCandidatesByStatus(Repository<Candidate>& candidates) {
         else if (s == CAND_OFFERED)   ++offC;
         else if (s == CAND_REJECTED)  ++rejC;
     }
-    std::cout << "\n--- Кандидаты по статусам ---\n"
-        << "  Новый          : " << newC << "\n"
-        << "  Собеседование  : " << intC << "\n"
-        << "  Оффер          : " << offC << "\n"
-        << "  Отказ          : " << rejC << "\n"
-        << "  Всего          : " << (newC + intC + offC + rejC) << "\n";
+
+    Table t({ "Статус", "Количество" });
+    t.addRow({ "Новый", std::to_string(newC) });
+    t.addRow({ "Собеседование", std::to_string(intC) });
+    t.addRow({ "Оффер", std::to_string(offC) });
+    t.addRow({ "Отказ", std::to_string(rejC) });
+    t.addRow({ "Всего", std::to_string(newC + intC + offC + rejC) });
+    t.print();
 }
 
 inline void printReportsMenu() {
