@@ -177,7 +177,6 @@ inline void candidatesMenu(Repository<Candidate>& candidates,
             catch (const ValidationException& ex) {
                 std::cout << "Îøèáêà: " << ex.what() << "\n";
             }
-            running = false;
             break;
         }
         case 4:

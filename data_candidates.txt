@@ -1,2 +1,2 @@
 # id|fullName|bd_day|bd_mon|bd_year|phone|email|resume|status|desired_pos_idx
-1|Алексей|12|12|1990|свйс|ствщйсйц|Я хочу у вас работать|0|2
+1|Алексей|12|12|1990|свйс|ствщйсйц|Я хочу у вас работать|2|2

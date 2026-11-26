@@ -27,7 +27,7 @@ namespace kyrsach {
     class Position {
         std::string title;
         int grade = GRADE_JUNIOR;
-
+        //int roleType = 1; // 1-Dev, 2-Mgr, 3-HR
     public:
         Position() = default;
         Position(const std::string& title, int grade)
@@ -40,6 +40,9 @@ namespace kyrsach {
         int getGrade() const {
             return grade;
         }
+        //int getRoleType() const { 
+        //    return roleType; 
+        //}
 
         bool operator==(const Position& other) const {
             return title == other.title && grade == other.grade;

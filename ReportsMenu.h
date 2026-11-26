@@ -20,7 +20,7 @@ inline void reportByRoles(Repository<Employee>& employees) {
         else if (dynamic_cast<Manager*>(e) != nullptr) ++mgrCount;
         else if (dynamic_cast<HRSpecialist*>(e) != nullptr) ++hrCount;
     }
-    std::cout << "\n--- Распределение по ролям (в штате) ---\n"
+    std::cout << "\n--- Распределение по ролям ---\n"
         << "  Разработчики    : " << devCount << "\n"
         << "  Менеджеры       : " << mgrCount << "\n"
         << "  HR-специалисты  : " << hrCount << "\n"

@@ -337,6 +337,17 @@ inline void hireCandidate(Repository<Employee>& employees, Repository<Candidate>
         std::cout << "В базе нет кандидатов.\n";
         return;
     }
+
+    Table t({ "ID", "ФИО", "Желаемая должность", "Статус" });
+    for (Candidate* c : candidates.getAll()) {
+        std::string st = (c->getStatus() == CAND_NEW) ? "Новый" :
+            (c->getStatus() == CAND_INTERVIEW) ? "Собеседование" :
+            (c->getStatus() == CAND_OFFERED) ? "Оффер" : "Отказ";
+        Position* p = c->getDesiredPosition();
+        t.addRow({ std::to_string(c->getId()), c->getFullName(), p ? p->getTitle() : "—", st });
+    }
+    t.print();
+
     int id = readInt("Введите id кандидата для найма (0-отмена): ");
     if (id == 0) return;
 
