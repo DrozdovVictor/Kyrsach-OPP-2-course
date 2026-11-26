@@ -189,6 +189,26 @@ inline void assignPosition(Employee* e, Repository<Position>& positions) {
     e->setPosition(list[idx - 1]);
     std::cout << "Должность назначена.\n";
 }
+
+// Developer: навыки
+inline void showSkills(Employee* e) {
+    Developer* d = dynamic_cast<Developer*>(e);
+    if (d == nullptr) {
+        std::cout << "Навыки могут быть только у разработчика.\n";
+        return;
+    }
+
+    const auto& skills = d->getSkills();
+    if (skills.empty()) {
+        std::cout << "  У сотрудника пока нет навыков.\n";
+        return;
+    }
+    Table t({ "Навык", "Уровень" });
+    for (const auto& s : skills) {
+        t.addRow({ s.name, std::to_string(s.level) });
+    }
+    t.print();
+}
 inline void addSkill(Employee* e) {
     Developer* d = dynamic_cast<Developer*>(e);
     if (d == nullptr) {
@@ -211,29 +231,59 @@ inline void addSkill(Employee* e) {
         std::cout << "Ошибка: " << ex.what() << "\n";
     }
 }
-inline void showSkills(Employee* e) {
+inline void editSkill(Employee* e) {
     Developer* d = dynamic_cast<Developer*>(e);
-    if (d == nullptr) {
-        std::cout << "Навыки могут быть только у разработчика.\n";
-        return;
-    }
-
-    const auto& skills = d->getSkills();
+    if (!d) return;
+    auto& skills = const_cast<std::vector<Skill>&>(d->getSkills());
     if (skills.empty()) {
-        std::cout << "  У сотрудника пока нет навыков.\n";
+        std::cout << "Нет навыков для редактирования.\n";
         return;
     }
-    Table t({ "Навык", "Уровень" });
-    for (const auto& s : skills) {
-        t.addRow({ s.name, std::to_string(s.level) });
+    for (int i = 0; i < (int)skills.size(); ++i) {
+        std::cout << "  " << (i + 1) << ". " << skills[i].name << " (" << skills[i].level << ")\n";
     }
-    t.print();
+    int idx = readInt("Выберите номер навыка (0-отмена): ", 0, skills.size());
+    if (idx == 0) return;
+
+    skills[idx - 1].level = readInt("Новый уровень (1-5): ", 1, 5);
+    std::cout << "Уровень навыка обновлён.\n";
+}
+inline void deleteSkill(Employee* e) {
+    Developer* d = dynamic_cast<Developer*>(e);
+    if (!d) return;
+    auto& skills = const_cast<std::vector<Skill>&>(d->getSkills());
+    if (skills.empty()) return;
+    for (int i = 0; i < (int)skills.size(); ++i) {
+        std::cout << "  " << (i + 1) << ". " << skills[i].name << "\n";
+    }
+    int idx = readInt("Выберите номер навыка для удаления (0-отмена): ", 0, skills.size());
+    if (idx == 0) return;
+
+    skills.erase(skills.begin() + (idx - 1));
+    std::cout << "Навык удалён.\n";
 }
 
 // Manager: добавить подчинённого
 // Здесь ДВЕ проверки:
 //   1) canManage() — полиморфный запрос «умеет ли управлять»
 //   2) dynamic_cast — доступ к методу addSubordinate
+inline void showSubordinates(Employee* e) {
+    Manager* m = dynamic_cast<Manager*>(e);
+    if (!m) return;
+    const auto& subs = m->getSubordinates();
+    if (subs.empty()) {
+        std::cout << "Нет подчинённых.\n";
+        return;
+    }
+    Table t({ "ID", "ФИО", "Роль", "Должность", "Статус" });
+    for (Employee* sub : subs) {
+        std::string st = (sub->getStatus() == STATUS_ACTIVE) ? "Работает" :
+            (sub->getStatus() == STATUS_VACATION) ? "Отпуск" : "Уволен";
+        Position* p = sub->getPosition();
+        t.addRow({ std::to_string(sub->getId()), sub->getFullName(), sub->getRole(), p ? p->getTitle() : "—", st });
+    }
+    t.print();
+}
 inline void addSubordinate(Employee* e, Repository<Employee>& employees) {
     // 1) Полиморфная проверка права
     if (!e->canManage()) {
@@ -270,26 +320,75 @@ inline void addSubordinate(Employee* e, Repository<Employee>& employees) {
     std::cout << "Подчинённый добавлен (всего: "
         << mgr->getSubordinatesCount() << ").\n";
 }
+inline void removeSubordinate(Employee* e) {
+    Manager* m = dynamic_cast<Manager*>(e);
+    if (!m) return;
+    if (m->getSubordinates().empty()) return;
+
+    int id = readInt("Введите id подчинённого для удаления (0-отмена): ");
+    if (id == 0) return;
+    m->removeSubordinate(id);
+    std::cout << "Подчинённый удалён (если он был в списке).\n";
+}
+
+// HR: превратить кандидата в сотрудника
+inline void hireCandidate(Repository<Employee>& employees, Repository<Candidate>& candidates, Repository<Position>& positions) {
+    if (candidates.empty()) {
+        std::cout << "В базе нет кандидатов.\n";
+        return;
+    }
+    int id = readInt("Введите id кандидата для найма (0-отмена): ");
+    if (id == 0) return;
+
+    Candidate* c = nullptr;
+    try { c = candidates.findById(id); }
+    catch (const NotFoundException& ex) { std::cout << ex.what() << "\n"; return; }
+
+    if (c->getStatus() == CAND_OFFERED) {
+        std::cout << "Этот кандидат уже принят на работу (статус 'Оффер').\n";
+        return;
+    }
+
+    std::cout << "Кем будет работать " << c->getFullName() << "?\n"
+        << "  1. Разработчик\n  2. Менеджер\n  3. HR-специалист\n";
+    int role = readInt("Выбор: ", 1, 3);
+
+    Date today = { 1, 1, 2024 }; // Для простоты берем фиксированную дату или можно спросить
+    Employee* newEmp = nullptr;
+
+    if (role == 1) {
+        int grade = readInt("Грейд (0-юниор, 1-мидл, 2-сеньор, 3-лид): ", GRADE_JUNIOR, GRADE_LEAD);
+        newEmp = EmployeeFactory::createDeveloper(c->getFullName(), c->getBirthDay(), c->getContacts(), today, grade);
+    }
+    else if (role == 2) {
+        newEmp = EmployeeFactory::createManager(c->getFullName(), c->getBirthDay(), c->getContacts(), today);
+    }
+    else {
+        newEmp = EmployeeFactory::createHR(c->getFullName(), c->getBirthDay(), c->getContacts(), today);
+    }
+
+    // Если у кандидата была желаемая должность, назначаем её сотруднику
+    if (c->getDesiredPosition()) newEmp->setPosition(c->getDesiredPosition());
+
+    employees.add(newEmp);
+    c->setStatus(CAND_OFFERED); // Меняем статус кандидата
+    std::cout << "Кандидат успешно принят на работу! Создан сотрудник #" << newEmp->getId() << "\n";
+}
 
 inline void employeeOperationsMenu(Repository<Employee>& employees,
-    Repository<Position>& positions) {
+    Repository<Position>& positions, Repository<Candidate>& candidates) {
     int id = readInt("Введите id сотрудника (0-отмена): ");
     if (id == 0) return;
 
     Employee* e = nullptr;
-    try {
-        e = employees.findById(id);
-    }
-    catch (const NotFoundException& ex) {
-        std::cout << "Ошибка: " << ex.what() << "\n";
-        return;
-    }
+    try { e = employees.findById(id); }
+    catch (const NotFoundException& ex) { std::cout << "Ошибка: " << ex.what() << "\n"; return; }
 
     std::cout << "\nВыбран сотрудник:\n  " << *e;
 
-    // Один раз проверяем тип сотрудника
     Developer* dev = dynamic_cast<Developer*>(e);
     Manager* mgr = dynamic_cast<Manager*>(e);
+    HRSpecialist* hr = dynamic_cast<HRSpecialist*>(e);
 
     bool running = true;
     while (running) {
@@ -298,34 +397,40 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
         std::cout << "  2. Назначить должность\n";
         std::cout << "  3. Показать подробную информацию\n";
 
-        // Переменные для хранения номеров специфичных пунктов
-        int optAddSkill = -1, optShowSkills = -1, optAddSub = -1;
-        int nextNum = 4; // Следующий свободный номер
+        int next = 4;
+        int optAddSkill = -1, optEditSkill = -1, optDelSkill = -1, optShowSkill = -1;
+        int optAddSub = -1, optShowSub = -1, optDelSub = -1;
+        int optHire = -1;
 
-        if (dev != nullptr) {
-            std::cout << "  " << nextNum << ". Добавить навык\n";
-            optAddSkill = nextNum++;
-            std::cout << "  " << nextNum << ". Показать навыки\n";
-            optShowSkills = nextNum++;
+        if (dev) {
+            std::cout << "  " << next << ". Добавить навык\n"; optAddSkill = next++;
+            std::cout << "  " << next << ". Редактировать навык\n"; optEditSkill = next++;
+            std::cout << "  " << next << ". Удалить навык\n"; optDelSkill = next++;
+            std::cout << "  " << next << ". Показать навыки\n"; optShowSkill = next++;
         }
-        if (mgr != nullptr) {
-            std::cout << "  " << nextNum << ". Добавить подчинённого\n";
-            optAddSub = nextNum++;
+        if (mgr) {
+            std::cout << "  " << next << ". Добавить подчинённого\n"; optAddSub = next++;
+            std::cout << "  " << next << ". Показать подчинённых\n"; optShowSub = next++;
+            std::cout << "  " << next << ". Удалить подчинённого\n"; optDelSub = next++;
+        }
+        if (hr) {
+            std::cout << "  " << next << ". Нанять кандидата\n"; optHire = next++;
         }
 
-        std::cout << "  0. Назад\n";
-        std::cout << "------------------------------\n";
+        std::cout << "  0. Назад\n------------------------------\n";
+        int choice = readInt("Выбор: ", 0, next - 1);
 
-        // Максимально возможный выбор зависит от того, сколько пунктов мы вывели
-        int choice = readInt("Выбор: ", 0, nextNum - 1);
-
-        // Вместо switch используем if/else, так как номера динамические
         if (choice == 1) changeStatus(e);
         else if (choice == 2) assignPosition(e, positions);
         else if (choice == 3) printEmployeeDetails(e);
         else if (choice == optAddSkill) addSkill(e);
-        else if (choice == optShowSkills) showSkills(e);
+        else if (choice == optEditSkill) editSkill(e);
+        else if (choice == optDelSkill) deleteSkill(e);
+        else if (choice == optShowSkill) showSkills(e);
         else if (choice == optAddSub) addSubordinate(e, employees);
+        else if (choice == optShowSub) showSubordinates(e);
+        else if (choice == optDelSub) removeSubordinate(e);
+        else if (choice == optHire) hireCandidate(employees, candidates, positions);
         else if (choice == 0) running = false;
     }
 }
@@ -335,12 +440,12 @@ inline void printEmployeesMenu() {
         << "  1. Показать всех\n"
         << "  2. Найти по id\n"
         << "  3. Создать\n"
-        << "  4. Операции с сотрудником (по id)\n"
+        << "  4. Операции с сотрудником\n"
         << "  0. Назад\n"
         << "------------------\n";
 }
 inline void employeesMenu(Repository<Employee>& employees,
-    Repository<Position>& positions) {
+    Repository<Position>& positions, Repository<Candidate>& candidates) {
     bool running = true;
     while (running) {
         printEmployeesMenu();
@@ -367,7 +472,7 @@ inline void employeesMenu(Repository<Employee>& employees,
             createEmployeeMenu(employees);
             break;
         case 4:
-            employeeOperationsMenu(employees, positions);
+            employeeOperationsMenu(employees, positions, candidates);
             break;
         case 0:
             running = false;
@@ -375,6 +480,3 @@ inline void employeesMenu(Repository<Employee>& employees,
         }
     }
 }
-
-void employeeOperationsMenu(Repository<Employee>& employees,
-    Repository<Position>& positions);

@@ -58,7 +58,7 @@ int main() {
         int choice = readInt("Выбор: ", 0, 6);
 
         switch (choice) {
-        case 1: employeesMenu(employees, positions); break;
+        case 1: employeesMenu(employees, positions, candidates); break;
         case 2: candidatesMenu(candidates, positions); break;
         case 3: positionsMenu(positions); break;
         case 4: reportsMenu(employees, candidates); break;

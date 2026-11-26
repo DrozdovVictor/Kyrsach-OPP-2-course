@@ -31,17 +31,25 @@ namespace kyrsach {
         std::string getRole() const override {
             return "Менеджер";
         }
+
         const std::vector<Employee*>& getSubordinates() const { 
             return subordinates; 
+        }
+        int getSubordinatesCount() const {
+            return static_cast<int>(subordinates.size());
+        }
+        void removeSubordinate(int id) {
+            for (auto it = subordinates.begin(); it != subordinates.end(); ++it) {
+                if ((*it)->getId() == id) {
+                    subordinates.erase(it);
+                    return;
+                }
+            }
         }
 
         void print(std::ostream& os) const override {
             os << "[Менеджер] " << getFullName()
                 << " | подчинённых: " << subordinates.size() << "\n";
-        }
-
-        int getSubordinatesCount() const {
-            return static_cast<int>(subordinates.size());
         }
     };
 }

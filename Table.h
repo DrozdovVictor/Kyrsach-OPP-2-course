@@ -10,6 +10,7 @@ namespace kyrsach {
     inline size_t utf8_length(const std::string& str) {
         size_t len = 0;
         for (char c : str) {
+            if (c == '\r') continue; // Игнорируем возврат каретки Windows
             // Пропускаем байты-продолжения (10xxxxxx)
             if ((c & 0xC0) != 0x80) ++len;
         }
