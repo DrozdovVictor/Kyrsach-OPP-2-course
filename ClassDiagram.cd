@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="kyrsach::Candidate">
-    <Position X="4" Y="4.5" Width="1.5" />
+    <Position X="4" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAQAAAAAAAABBEAAABAAAAAEAAABBEAAAABAAAAgAAI=</HashCode>
       <FileName>Candidate.h</FileName>
@@ -10,21 +10,21 @@
   <Class Name="kyrsach::Person">
     <Position X="4" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AsQAAAQAAAABAAAAAACAAAgACAgAAAAAIAAgAAAAAgA=</HashCode>
+      <HashCode>AsQAAIQAAAABAAAAAACABAgACAgAAAAAIAAgAAAAAgA=</HashCode>
       <FileName>Person.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="kyrsach::Employee">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAIAgAEAAAAAAABBAAIAAGCAACBEAEAgAAAAAAAAA=</HashCode>
+      <HashCode>AAQAIAgAEAAAAAAABBAAIAAGiAACBEAEAkAAAAAAAAA=</HashCode>
       <FileName>Emploee.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="kyrsach::Developer">
     <Position X="10" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQQEBAAAAABAAAAAAAAAAAAAIACAAAAAQAAAIAAAAA=</HashCode>
+      <HashCode>AAQQEBABAAABAAAAAAAAAAAAAIACAAAAAQAAAIAAAAA=</HashCode>
       <FileName>Developer.h</FileName>
     </TypeIdentifier>
   </Class>

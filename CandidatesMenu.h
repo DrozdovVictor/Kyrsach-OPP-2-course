@@ -7,15 +7,6 @@ using namespace kyrsach;
 
 inline std::string gradeToStr(int g);
 
-inline void printCandidateOperationsMenu() {
-    std::cout << "\n--- ОПЕРАЦИИ С КАНДИДАТОМ ---\n"
-        << "  1. Сменить статус\n"
-        << "  2. Изменить резюме\n"
-        << "  3. Назначить желаемую должность\n"
-        << "  4. Показать подробную информацию\n"
-        << "  0. Назад\n"
-        << "------------------------------\n";
-}
 inline void candChangeStatus(Candidate* c) {
     int status = readInt(
         "Статус (0-новый, 1-собеседование, 2-оффер, 3-отказ): ",
@@ -74,36 +65,6 @@ inline void candPrintDetails(Candidate* c) {
     std::cout << "\n--- Карточка кандидата ---\n";
     t.print();
 }
-inline void menuCandidateOperations(Repository<Candidate>& candidates,
-    Repository<Position>& positions) {
-    int id = readInt("Введите id кандидата (0-отмена): ");
-    if (id == 0) return;
-
-    Candidate* c = nullptr;
-    try {
-        c = candidates.findById(id);
-    }
-    catch (const NotFoundException& ex) {
-        std::cout << "Ошибка: " << ex.what() << "\n";
-        return;
-    }
-
-    std::cout << "\nВыбран кандидат:\n  " << *c;
-
-    bool running = true;
-    while (running) {
-        printCandidateOperationsMenu();
-        int choice = readInt("Выбор: ", 0, 4);
-
-        switch (choice) {
-        case 1: candChangeStatus(c); break;
-        case 2: candChangeResume(c); break;
-        case 3: candAssignPosition(c, positions); break;
-        case 4: candPrintDetails(c); break;
-        case 0: running = false; break;
-        }
-    }
-}
 
 inline void printCandidatesMenu() {
     std::cout << "\n--- КАНДИДАТЫ ---\n"
@@ -112,7 +73,7 @@ inline void printCandidatesMenu() {
         << "  3. Создать\n"
         << "  4. Редактировать\n"
         << "  5. Удалить\n"
-        << "  6. Операции с кандидатом\n"
+        << "  6. Показать подробную информацию\n"
         << "  0. Назад\n"
         << "-----------------\n";
 }
@@ -229,7 +190,8 @@ inline void candidatesMenu(Repository<Candidate>& candidates,
             if (id == 0) return;
             try {
                 Candidate* c = candidates.findById(id);
-                editCandidate(c, positions); // Вызываем функцию редактирования кандидата
+                std::cout << "\nВыбран кандидат:\n  " << *c;
+                editCandidate(c, positions);
             }
             catch (const NotFoundException& ex) {
                 std::cout << "Ошибка: " << ex.what() << "\n";
@@ -241,7 +203,15 @@ inline void candidatesMenu(Repository<Candidate>& candidates,
             break;
         }
         case 6: {
-            menuCandidateOperations(candidates, positions);
+            int id = readInt("Введите id кандидата (0-отмена): ");
+            if (id == 0) return;
+            try {
+                Candidate* c = candidates.findById(id);
+                candPrintDetails(c);
+            }
+            catch (const NotFoundException& ex) {
+                std::cout << "Ошибка: " << ex.what() << "\n";
+            }
             break;
         }
         case 0: {

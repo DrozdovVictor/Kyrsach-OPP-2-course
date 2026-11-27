@@ -409,12 +409,9 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
 
     bool running = true;
     while (running) {
-        std::cout << "\n--- ОПЕРАЦИИ С СОТРУДНИКОМ ---\n";
-        std::cout << "  1. Сменить статус\n";
-        std::cout << "  2. Назначить должность\n";
-        std::cout << "  3. Показать подробную информацию\n";
+        std::cout << "\n--- СПЕЦИФИЧНЫЕ ОПЕРАЦИИ ---\n";
 
-        int next = 4;
+        int next = 1;
         int optAddSkill = -1, optEditSkill = -1, optDelSkill = -1, optShowSkill = -1;
         int optAddSub = -1, optShowSub = -1, optDelSub = -1;
         int optHire = -1;
@@ -434,13 +431,10 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
             std::cout << "  " << next << ". Нанять кандидата\n"; optHire = next++;
         }
 
-        std::cout << "  0. Назад\n------------------------------\n";
+        std::cout << "  0. Назад\n----------------------------\n";
         int choice = readInt("Выбор: ", 0, next - 1);
 
-        if (choice == 1) changeStatus(e);
-        else if (choice == 2) assignPosition(e, positions);
-        else if (choice == 3) printEmployeeDetails(e);
-        else if (choice == optAddSkill) addSkill(e);
+        if (choice == optAddSkill) addSkill(e);
         else if (choice == optEditSkill) editSkill(e);
         else if (choice == optDelSkill) deleteSkill(e);
         else if (choice == optShowSkill) showSkills(e);
@@ -521,7 +515,8 @@ inline void printEmployeesMenu() {
         << "  3. Создать\n"
         << "  4. Редактировать\n"
         << "  5. Удалить\n"
-        << "  6. Операции с сотрудником\n"
+        << "  6. Специфичные операции\n"
+        << "  7. Показать подробную информацию\n"
         << "  0. Назад\n"
         << "------------------\n";
 }
@@ -530,7 +525,7 @@ inline void employeesMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printEmployeesMenu();
-        int choice = readInt("Выбор: ", 0, 6);
+        int choice = readInt("Выбор: ", 0, 7);
 
         switch (choice) {
         case 1: {
@@ -558,7 +553,8 @@ inline void employeesMenu(Repository<Employee>& employees,
             if (id == 0) return;
             try {
                 Employee* e = employees.findById(id);
-                editEmployee(e, positions); // Вызываем ту самую функцию редактирования
+                std::cout << "\nВыбран сотрудник:\n  " << *e;
+                editEmployee(e, positions);
             }
             catch (const NotFoundException& ex) {
                 std::cout << "Ошибка: " << ex.what() << "\n";
@@ -571,6 +567,18 @@ inline void employeesMenu(Repository<Employee>& employees,
         }
         case 6: {
             employeeOperationsMenu(employees, positions, candidates);
+            break;
+        }
+        case 7: {
+            int id = readInt("Введите id сотрудника (0-отмена): ");
+            if (id == 0) return;
+            try {
+                Employee* e = employees.findById(id);
+                printEmployeeDetails(e);
+            }
+            catch (const NotFoundException& ex) {
+                std::cout << "Ошибка: " << ex.what() << "\n";
+            }
             break;
         }
         case 0: {
