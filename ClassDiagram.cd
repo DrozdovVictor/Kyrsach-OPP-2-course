@@ -1,44 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Candidate">
+  <Class Name="kyrsach::Candidate">
     <Position X="4" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAQAAAAAAAABBEAAAAAAAAAAAAABBEAAAABAAAAgAAI=</HashCode>
+      <HashCode>CAQAAAAAAAABBEAAABAAAAAEAAABBEAAAABAAAAgAAI=</HashCode>
       <FileName>Candidate.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Person">
+  <Class Name="kyrsach::Person">
     <Position X="4" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AoQAAAQAAAABAAAAAACAAAgAAAgAAAAAIAAgAAAAAgA=</HashCode>
+      <HashCode>AsQAAAQAAAABAAAAAACAAAgACAgAAAAAIAAgAAAAAgA=</HashCode>
       <FileName>Person.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Employee">
+  <Class Name="kyrsach::Employee">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAEBAAEAQAgAAAAAAAKAACCBACBEAEAgAAQIAAAAA=</HashCode>
+      <HashCode>AAQAIAgAEAAAAAAABBAAIAAGCAACBEAEAgAAAAAAAAA=</HashCode>
       <FileName>Emploee.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Developer">
+  <Class Name="kyrsach::Developer">
     <Position X="10" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQQAAAAAAABAAAEACAAAAAAAJACAQAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAQQEBAAAAABAAAAAAAAAAAAAIACAAAAAQAAAIAAAAA=</HashCode>
       <FileName>Developer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Manager">
+  <Class Name="kyrsach::Manager">
     <Position X="10" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAEAAEAABAAAAAAAKgACAABACBAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AgQAAEAAEAABAAAAAAAAgACAAAACBAAAAAAAAAAAAAg=</HashCode>
       <FileName>Manager.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HRSpecialist">
+  <Class Name="kyrsach::HRSpecialist">
     <Position X="12" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAABAAAAAAAAAAAAADACAACAAACAAACAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAABAAAAAAAAAAAAACACAAAAAAAAAAAAAAA=</HashCode>
       <FileName>HRSpecialist.h</FileName>
     </TypeIdentifier>
   </Class>

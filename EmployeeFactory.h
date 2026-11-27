@@ -64,5 +64,4 @@ namespace kyrsach {
                 fullName, birthDay, contacts);
         }
     };
-
 }

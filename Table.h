@@ -75,14 +75,19 @@ namespace kyrsach {
             std::cout << "  (пусто)\n";
             return;
         }
-        Table t({ "ID", "ФИО", "Роль", "Статус" });
+        Table t({ "ID", "ФИО", "Роль", "Должность", "Статус" });
         for (Employee* e : employees.getAll()) {
             std::string statusStr = (e->getStatus() == STATUS_ACTIVE) ? "Работает" :
                 (e->getStatus() == STATUS_VACATION) ? "Отпуск" : "Уволен";
+
+            Position* p = e->getPosition();
+            std::string posStr = p ? p->getTitle() : "—"; // Если должности нет, ставим прочерк
+
             t.addRow({
                 std::to_string(e->getId()),
                 e->getFullName(),
                 e->getRole(),
+                posStr,
                 statusStr
                 });
         }
