@@ -21,6 +21,7 @@ inline void printCreateEmployeeMenu() {
         << "  0. Назад\n"
         << "--------------------------\n";
 }
+// Создание сотрудника
 inline Developer* createDeveloperInteractive() {
     std::cout << "\n--- Создание разработчика ---\n";
 
@@ -451,12 +452,76 @@ inline void employeeOperationsMenu(Repository<Employee>& employees,
     }
 }
 
+// Редактирование сотрудника
+inline void editEmployee(Employee* e, Repository<Position>& positions) {
+    bool running = true;
+    while (running) {
+        std::cout << "\n--- РЕДАКТИРОВАНИЕ ---\n"
+            << "  1. ФИО\n  2. Контакты\n  3. Статус\n"
+            << "  4. Должность\n";
+        if (dynamic_cast<Developer*>(e)) {
+            std::cout << "  5. Грейд\n";
+        }
+        std::cout << "  0. Назад\n----------------------\n";
+
+        int max_opt = dynamic_cast<Developer*>(e) ? 5 : 4;
+        int choice = readInt("Выбор: ", 0, max_opt);
+
+        if (choice == 1) {
+            e->setFullName(readLine("Новое ФИО: "));
+        }
+        else if (choice == 2) {
+            e->setContacts(readContactInfo("Новые контакты"));
+        }
+        else if (choice == 3) {
+            changeStatus(e);
+        }
+        else if (choice == 4) {
+            assignPosition(e, positions);
+        }
+        else if (choice == 5 && dynamic_cast<Developer*>(e)) {
+            int g = readInt("Новый грейд (0-3): ", GRADE_JUNIOR, GRADE_LEAD);
+            dynamic_cast<Developer*>(e)->setGrade(g);
+            std::cout << "Грейд обновлён.\n";
+        }
+        else if (choice == 0) {
+            running = false;
+        }
+    }
+}
+// Удаление сотрудника
+inline void deleteEmployee(Repository<Employee>& employees) {
+    int id = readInt("Введите id сотрудника для удаления (0-отмена): ");
+    if (id == 0) return;
+
+    try {
+        // 1. Проверяем, существует ли такой сотрудник
+        employees.findById(id);
+
+        // 2. Убираем его из подчинённых у всех менеджеров
+        for (Employee* e : employees.getAll()) {
+            if (auto mgr = dynamic_cast<Manager*>(e)) {
+                mgr->removeSubordinate(id);
+            }
+        }
+
+        // 3. Удаляем из репозитория (Repository сам вызовет delete)
+        employees.removeById(id);
+        std::cout << "Сотрудник удалён.\n";
+    }
+    catch (const NotFoundException& ex) {
+        std::cout << "Ошибка: " << ex.what() << "\n";
+    }
+}
+
 inline void printEmployeesMenu() {
     std::cout << "\n--- СОТРУДНИКИ ---\n"
         << "  1. Показать всех\n"
         << "  2. Найти по id\n"
         << "  3. Создать\n"
-        << "  4. Операции с сотрудником\n"
+        << "  4. Редактировать\n"
+        << "  5. Удалить\n"
+        << "  6. Операции с сотрудником\n"
         << "  0. Назад\n"
         << "------------------\n";
 }
@@ -465,7 +530,7 @@ inline void employeesMenu(Repository<Employee>& employees,
     bool running = true;
     while (running) {
         printEmployeesMenu();
-        int choice = readInt("Выбор: ", 0, 4);
+        int choice = readInt("Выбор: ", 0, 6);
 
         switch (choice) {
         case 1: {
@@ -484,15 +549,34 @@ inline void employeesMenu(Repository<Employee>& employees,
             }
             break;
         }
-        case 3:
+        case 3: {
             createEmployeeMenu(employees);
             break;
-        case 4:
+        }
+        case 4: {
+            int id = readInt("Введите id сотрудника для редактирования (0-отмена): ");
+            if (id == 0) return;
+            try {
+                Employee* e = employees.findById(id);
+                editEmployee(e, positions); // Вызываем ту самую функцию редактирования
+            }
+            catch (const NotFoundException& ex) {
+                std::cout << "Ошибка: " << ex.what() << "\n";
+            }
+            break;
+        }
+        case 5: {
+            deleteEmployee(employees);
+            break;
+        }
+        case 6: {
             employeeOperationsMenu(employees, positions, candidates);
             break;
-        case 0:
+        }
+        case 0: {
             running = false;
             break;
+        }
         }
     }
 }

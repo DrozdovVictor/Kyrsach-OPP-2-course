@@ -51,6 +51,16 @@ namespace kyrsach {
 			return contacts; 
 		}
 
+		void setFullName(const std::string& name) { 
+			fullName = name;
+		}
+		void setBirthDay(const Date& date) { 
+			birthDay = date; 
+		}
+		void setContacts(const ContactInfo& c) { 
+			contacts = c; 
+		}
+
 		Person(const Person&) = delete; // запрет копирования
 		Person& operator=(const Person&) = delete; // запрет присваивания
 

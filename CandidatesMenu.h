@@ -110,10 +110,13 @@ inline void printCandidatesMenu() {
         << "  1. Показать всех\n"
         << "  2. Найти по id\n"
         << "  3. Создать\n"
-        << "  4. Операции с кандидатом (по id)\n"
+        << "  4. Редактировать\n"
+        << "  5. Удалить\n"
+        << "  6. Операции с кандидатом\n"
         << "  0. Назад\n"
         << "-----------------\n";
 }
+// Создать кандидата
 inline Candidate* createCandidateInteractive() {
     std::cout << "\n--- Создание кандидата ---\n";
 
@@ -143,12 +146,54 @@ inline Candidate* createCandidateInteractive() {
     c->setStatus(status);
     return c;
 }
+// Редактировать кандидата
+inline void editCandidate(Candidate* c, Repository<Position>& positions) {
+    bool running = true;
+    while (running) {
+        std::cout << "\n--- РЕДАКТИРОВАНИЕ ---\n"
+            << "  1. ФИО\n  2. Контакты\n  3. Резюме\n"
+            << "  4. Статус\n  5. Желаемая должность\n"
+            << "  0. Назад\n----------------------\n";
+        int choice = readInt("Выбор: ", 0, 5);
+
+        if (choice == 1) {
+            c->setFullName(readLine("Новое ФИО: "));
+        }
+        else if (choice == 2) {
+            c->setContacts(readContactInfo("Новые контакты"));
+        }
+        else if (choice == 3) {
+            c->setResume(readLine("Новое резюме: "));
+        }
+        else if (choice == 4) {
+            candChangeStatus(c);
+        }
+        else if (choice == 5) {
+            candAssignPosition(c, positions);
+        }
+        else if (choice == 0) {
+            running = false;
+        }
+    }
+}
+// Удалить кандидата
+inline void deleteCandidate(Repository<Candidate>& candidates) {
+    int id = readInt("Введите id кандидата для удаления (0-отмена): ");
+    if (id == 0) return;
+    try {
+        candidates.removeById(id);
+        std::cout << "Кандидат удалён.\n";
+    }
+    catch (const NotFoundException& ex) {
+        std::cout << "Ошибка: " << ex.what() << "\n";
+    }
+}
 inline void candidatesMenu(Repository<Candidate>& candidates,
     Repository<Position>& positions) {
     bool running = true;
     while (running) {
         printCandidatesMenu();
-        int choice = readInt("Выбор: ", 0, 4);
+        int choice = readInt("Выбор: ", 0, 6);
 
         switch (choice) {
         case 1: {
@@ -179,12 +224,30 @@ inline void candidatesMenu(Repository<Candidate>& candidates,
             }
             break;
         }
-        case 4:
+        case 4: {
+            int id = readInt("Введите id кандидата для редактирования (0-отмена): ");
+            if (id == 0) return;
+            try {
+                Candidate* c = candidates.findById(id);
+                editCandidate(c, positions); // Вызываем функцию редактирования кандидата
+            }
+            catch (const NotFoundException& ex) {
+                std::cout << "Ошибка: " << ex.what() << "\n";
+            }
+            break;
+        }
+        case 5: {
+            deleteCandidate(candidates);
+            break;
+        }
+        case 6: {
             menuCandidateOperations(candidates, positions);
             break;
-        case 0:
+        }
+        case 0: {
             running = false;
             break;
+        }
         }
     }
 }

@@ -74,18 +74,22 @@ namespace kyrsach {
         ~Employee() override = default;
 
         virtual std::string getDuties() const = 0;
-        virtual bool canManage() const {
-            return false;
+        int getStatus() const {
+            return status;
         }
-
-        static int generateId() { 
-            return nextId++; 
+        int getPersonnelNumber() const {
+            return personnelNumber;
+        }
+        const Date& getHireDate() const {
+            return hireDate;
+        }
+        Position* getPosition() const {
+            return position;
         }
 
         void setPosition(Position* p) {
             position = p;
         }
-
         void setStatus(int s) {
             if (s < STATUS_ACTIVE || s > STATUS_FIRED)
                 throw ValidationException("Неверный статус: " + std::to_string(s));
@@ -97,18 +101,18 @@ namespace kyrsach {
             else if (name == "уволен" || name == "fired") setStatus(STATUS_FIRED);
             else throw ValidationException("Неизвестный статус: " + name);
         }
+        void setPersonnelNumber(int pn) { 
+            personnelNumber = pn; 
+        }
+        void setHireDate(const Date& date) { 
+            hireDate = date; 
+        }
 
-        int getStatus() const {
-            return status;
+        static int generateId() {
+            return nextId++;
         }
-        int getPersonnelNumber() const { 
-            return personnelNumber;
-        }
-        const Date& getHireDate() const { 
-            return hireDate; 
-        }
-        Position* getPosition() const { 
-            return position; 
+        virtual bool canManage() const {
+            return false;
         }
     };
 }

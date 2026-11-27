@@ -36,6 +36,11 @@ namespace kyrsach {
         int getGrade() const {
             return grade;
         }
+        void setGrade(int g) {
+            if (g < GRADE_JUNIOR || g > GRADE_LEAD)
+                throw ValidationException("Неверный грейд");
+            grade = g;
+        }
 
         void addSkill(const Skill& s) {
             if (s.level < 1 || s.level > 5)
@@ -45,8 +50,8 @@ namespace kyrsach {
         const std::vector<Skill>& getSkills() const { 
             return skills;
         }
-        int getSkillsCount() const { 
-            return static_cast<int>(skills.size()); 
+        int getSkillsCount() const {
+            return static_cast<int>(skills.size());
         }
 
         void print(std::ostream& os) const override {
